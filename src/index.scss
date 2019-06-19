@@ -1,3 +1,46 @@
-.cb {
-  color: red;
+// Normalizing:
+body {
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  font-size: 16px;
+  font-family: sans-serif;
+}
+
+.auth {
+  background: whitesmoke;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+#index {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  background: whitesmoke;
+  padding: 1rem 0;
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  background: whitesmoke;
 }
