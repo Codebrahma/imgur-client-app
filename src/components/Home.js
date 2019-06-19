@@ -1,10 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const Home = () => (
-  <div>
-    <p>Home</p>
+  <div className="home">
+    {/* <p>Home</p>
     <Link to="/dashboard">Dashboard</Link>
+    <Link to="/auth">Auth</Link> */}
   </div>
 );
 export default Home;
