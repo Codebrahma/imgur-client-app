@@ -37,6 +37,7 @@ module.exports = {
         test: /\.css$/,
         include: [path.resolve(__dirname, "src")],
         use: [MiniCssExtractPlugin.loader, "css-loader"]
+        include: /flexboxgrid/
       },
       {
         test: /\.s?[ac]ss$/,

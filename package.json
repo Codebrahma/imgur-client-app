@@ -45,6 +45,7 @@
     "babel-eslint": "^8.2.3",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-flexbox-grid": "^2.1.2",
     "react-router-dom": "^4.3.1"
   }
 }
