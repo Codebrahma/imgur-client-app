@@ -1,19 +1,21 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const path = require('path');
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const path = require("path");
+const Dotenv = require("dotenv-webpack");
 
-const devMode = process.env.NODE_ENV !== 'production';
+const devMode = process.env.NODE_ENV !== "production";
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
   template: "./src/index.html",
   filename: "./index.html"
 });
 
 module.exports = {
-  output:{
-    path: path.join(__dirname,'/dist'),
-    filename:'[name].[hash].js'
+  output: {
+    path: path.join(__dirname, "/dist"),
+    filename: "[name].[hash].js"
   },
   module: {
     rules: [
@@ -33,27 +35,20 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: [
-          path.resolve(__dirname, 'src'),
-        ],
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader"
-        ]
+        include: [path.resolve(__dirname, "src")],
+        use: [MiniCssExtractPlugin.loader, "css-loader"]
       },
       {
         test: /\.s?[ac]ss$/,
         use: [
-           devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-           'css-loader',
-           'sass-loader',
-        ],
+          devMode ? "style-loader" : MiniCssExtractPlugin.loader,
+          "css-loader",
+          "sass-loader"
+        ]
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          "file-loader"
-        ]
+        use: ["file-loader"]
       }
     ]
   },
@@ -61,14 +56,15 @@ module.exports = {
     htmlWebpackPlugin,
     //new BundleAnalyzerPlugin(),
     new MiniCssExtractPlugin({
-      filename: devMode ? '[name].css' : '[name].[hash].css',
-      chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
-    })
+      filename: devMode ? "[name].css" : "[name].[hash].css",
+      chunkFilename: devMode ? "[id].css" : "[id].[hash].css"
+    }),
+    new Dotenv()
   ],
   optimization: {
-    minimizer: [new UglifyJsPlugin()],
+    minimizer: [new UglifyJsPlugin()]
   },
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: true
   }
 };

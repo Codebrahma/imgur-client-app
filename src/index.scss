@@ -1,3 +1,5 @@
+@import "./bootstrap-grid.min.css";
+
 // Normalizing:
 body {
   padding: 0;
@@ -28,10 +30,13 @@ body {
 nav {
   position: sticky;
   top: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 3rem;
   background: whitesmoke;
+  padding: 1rem 0;
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 main {
