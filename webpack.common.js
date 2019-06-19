@@ -35,9 +35,14 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: [path.resolve(__dirname, "src")],
-        use: [MiniCssExtractPlugin.loader, "css-loader"]
+        loader: 'style-loader!css-loader',
         include: /flexboxgrid/
+      },
+      {
+        test: /\.css$/,
+        include: [path.resolve(__dirname, "src")],
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        exclude: /flexboxgrid/
       },
       {
         test: /\.s?[ac]ss$/,
@@ -45,7 +50,8 @@ module.exports = {
           devMode ? "style-loader" : MiniCssExtractPlugin.loader,
           "css-loader",
           "sass-loader"
-        ]
+        ],
+        exclude: /flexboxgrid/
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
