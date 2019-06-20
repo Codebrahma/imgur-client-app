@@ -1,0 +1,32 @@
+// .homeWrapper{
+//     display: grid;
+//     flex-flow: column;
+//     width: 240px;
+// }
+.cardListWrapper{
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(1,1fr);
+}
+@media screen and (min-width:520px){
+    .cardListWrapper{
+        display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(2,1fr);
+        
+    }
+}
+@media screen and (min-width:928px){
+    .cardListWrapper{
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: repeat(3,1fr);
+    }
+}
+@media only screen and (min-width:1186px) {
+    .cardListWrapper{
+        display: grid;
+        grid-gap: 20px;
+        grid-template-columns: repeat(4,1fr);
+    }
+}
