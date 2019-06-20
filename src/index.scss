@@ -44,3 +44,9 @@ main {
 footer {
   background: whitesmoke;
 }
+
+.flexCenterAlign {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

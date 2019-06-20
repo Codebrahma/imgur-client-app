@@ -1,36 +1,35 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
-// const extractParams = (hash) => {
-//   const destructed = hash.split(/&|=/g);
-//   const data = {
-//     [destructed[0].slice(1)]: destructed[1],
-//   };
-//   for (let i = 2; i < destructed.length; i += 2) {
-//     data[destructed[i]] = destructed[i + 1];
-//   }
-//   return data;
-// };
+class AuthCallback extends Component {
+  static contextType = AuthContext;
+  render() {
+    const { access_token: accessToken, extractParamsAndSaveToLocalStorageAndState } = this.context;
 
-const extractParamsAndSaveToLocalStorage = (hash) => {
-  const destructed = hash.split(/&|=/g);
-  localStorage.setItem(destructed[0].slice(1), destructed[1]);
-  for (let i = 2; i < destructed.length; i += 2) {
-    localStorage.setItem(destructed[i], destructed[i + 1]);
+    if (accessToken) { return <Redirect to="/dashboard" />; }
+
+    // TODO: Validate the hash, and How to handle invalid hash?
+    extractParamsAndSaveToLocalStorageAndState(this.props.location.hash);
+    return <Redirect to="/" />;
   }
-};
-
-const AuthCallback = (props) => {
-  extractParamsAndSaveToLocalStorage(props.location.hash);
-
-  if (localStorage.getItem('access_token')) { return <Redirect to="/dashboard" />; }
-
-  return <h3>Callback</h3>;
-};
+}
 
 AuthCallback.propTypes = {
-  location: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  location: PropTypes.shape({
+    hash: PropTypes.string.isRequired,
+    key: PropTypes.string,
+    pathname: PropTypes.string.isRequired,
+    search: PropTypes.string.isRequired,
+    state: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.bool,
+      PropTypes.number,
+      PropTypes.object,
+      PropTypes.string,
+    ]),
+  }).isRequired,
 };
 
 export default AuthCallback;
