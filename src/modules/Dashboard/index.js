@@ -1,5 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const Dashboard = () => (<h1>Dashboard</h1>);
+class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { };
+  }
+  render() {
+    return (
+      <h1>Dashboard</h1>
+    );
+  }
+}
 
 export default Dashboard;

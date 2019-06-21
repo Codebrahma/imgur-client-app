@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 
 export const AuthContext = React.createContext();
 
@@ -15,8 +14,11 @@ class AuthContextProvider extends Component {
   }
 
     logOut = () => {
+      // HELP: How to clear the entire state.
       this.setState({
         access_token: null,
+        refresh_token: null,
+        account_username: null,
       });
       localStorage.clear();
     }
@@ -31,15 +33,7 @@ class AuthContextProvider extends Component {
         localStorage.setItem(destructed[i], destructed[i + 1]);
         data[destructed[i]] = destructed[i + 1];
       }
-      axios({
-        method: 'get',
-        url: `https://api.imgur.com/3/account/${data.account_username}`,
-        headers: { Authorization: `Client-ID ${process.env.CLIENT_ID}` },
-      }).then((res) => {
-        localStorage.setItem('data', JSON.stringify(res.data.data));
-        this.setState(data);
-      });
-      return <h1>Hello </h1>;
+      this.setState(data);
     };
 
     render() {
