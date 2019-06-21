@@ -8,6 +8,11 @@
     grid-gap: 10px;
     grid-template-columns: repeat(1,1fr);
 }
+.loader {
+   display: flex;
+   justify-content: center;
+   margin-top: 20px;
+}
 @media screen and (min-width:520px){
     .cardListWrapper{
         display: grid;

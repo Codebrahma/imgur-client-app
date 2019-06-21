@@ -48,7 +48,7 @@ class Card extends React.Component {
               <span>{data && data.views}</span>
             </div>
           </div>
-        </div>
+        </div>    
       </div>
     );
   }
