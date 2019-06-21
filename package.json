@@ -46,6 +46,7 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-flexbox-grid": "^2.1.2",
+    "react-loader-spinner": "^2.3.0",
     "react-router-dom": "^4.3.1"
   }
 }
