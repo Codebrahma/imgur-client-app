@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 export const AuthContext = React.createContext();
 
@@ -30,7 +31,14 @@ class AuthContextProvider extends Component {
         localStorage.setItem(destructed[i], destructed[i + 1]);
         data[destructed[i]] = destructed[i + 1];
       }
-      this.setState(data);
+      axios({
+        method: 'get',
+        url: `https://api.imgur.com/3/account/${data.account_username}`,
+        headers: { Authorization: `Client-ID ${process.env.CLIENT_ID}` },
+      }).then((res) => {
+        localStorage.setItem('data', JSON.stringify(res.data.data));
+        this.setState(data);
+      });
       return <h1>Hello </h1>;
     };
 

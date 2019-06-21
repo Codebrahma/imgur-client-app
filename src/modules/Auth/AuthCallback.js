@@ -1,35 +1,41 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+import { location, history } from '../../routerPropTypes';
 
 class AuthCallback extends Component {
   static contextType = AuthContext;
-  render() {
-    const { access_token: accessToken, extractParamsAndSaveToLocalStorageAndState } = this.context;
 
-    if (accessToken) { return <Redirect to="/dashboard" />; }
+  componentDidMount() {
+    const { extractParamsAndSaveToLocalStorageAndState } = this.context;
 
-    // TODO: Validate the hash, and How to handle invalid hash?
     extractParamsAndSaveToLocalStorageAndState(this.props.location.hash);
-    return <Redirect to="/" />;
+
+    // axios({
+    //   method: 'get',
+    //   url: `https://api.imgur.com/3/account/${username}`,
+    //   headers: { Authorization: `Client-ID ${process.env.CLIENT_ID}` },
+    // }).then((res) => {
+    //   localStorage.setItem('data', JSON.stringify(res.data.data));
+    //   this.props.history.push('/');
+    // });
+  }
+
+  componentDidUpdate() {
+    const { account_username: username, extractParamsAndSaveToLocalStorageAndState } = this.context;
+
+    if (username) {
+      this.props.history.push('/');
+    }
+  }
+
+  render() {
+    return <h1>Loading... (This should be a full page loader)</h1>;
   }
 }
 
 AuthCallback.propTypes = {
-  location: PropTypes.shape({
-    hash: PropTypes.string.isRequired,
-    key: PropTypes.string,
-    pathname: PropTypes.string.isRequired,
-    search: PropTypes.string.isRequired,
-    state: PropTypes.oneOfType([
-      PropTypes.array,
-      PropTypes.bool,
-      PropTypes.number,
-      PropTypes.object,
-      PropTypes.string,
-    ]),
-  }).isRequired,
+  location: location.isRequired,
+  history: history.isRequired,
 };
 
 export default AuthCallback;
