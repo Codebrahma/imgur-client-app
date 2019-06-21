@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 const Home = lazy(() => import('./modules/Home'));
 const AuthCallback = lazy(() => import('./modules/Auth/AuthCallback'));
 const Dashboard = lazy(() => import('./modules/Dashboard'));
+const User = lazy(() => import('./modules/User'));
 
 const Routes = () => (
   <Suspense fallback={<div>loading...</div>}>
@@ -17,9 +18,10 @@ const Routes = () => (
       <main>
         <Router>
           <Switch>
-            <Route path="/" component={Home} exact />
+            <Route exact path="/" component={Home} />
             <Route path="/auth_cb" component={AuthCallback} />
             <Route path="/dashboard" component={Dashboard} />
+            <Route path="/user/:username" component={User} />
           </Switch>
         </Router>
       </main>
