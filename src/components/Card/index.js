@@ -1,4 +1,5 @@
 import React from 'react';
+import LazyLoad from 'react-lazy-load';
 import './card.scss';
 import upVote from '../../svgs/upVote';
 import downVote from '../../svgs/downVote';
@@ -15,18 +16,22 @@ class Card extends React.Component {
     return (
       <div className="cardWrapper">
         {data && data.images && data.images[0].type === 'video/mp4' ? (
+          <LazyLoad>
           <video autoPlay loop className="media" muted>
             <source src={data && data.images && data.images[0].mp4} />
           </video>
+          </LazyLoad>
         ) : (
-          <img
-            className="media"
-            src={
-              (data && data.images && data.images[0].link) ||
-              (data && data.link)
-            }
-            alt="img"
-          />
+          <LazyLoad>
+            <img
+              className="media"
+              src={
+                (data && data.images && data.images[0].link) ||
+                (data && data.link)
+              }
+              alt="img"
+            />
+          </LazyLoad>
         )}
         <div className="detailsWrapper">
           <div className="title">{data && data.title}</div>
