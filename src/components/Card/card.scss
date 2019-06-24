@@ -30,10 +30,6 @@
     justify-content: space-around;
 }
 .media {
-    // display: block;
-    // height: auto;
-    // max-width: 100%;
-    // overflow: hidden;
     height: 200px;
     width: 100%;
     object-fit: fill;
@@ -47,11 +43,11 @@
 }
 .IconContainer{
     // color: hsla(0,0%,100%,.6);
-    height: 16px;
+    height: 20px;
     width: 12px;
-    fill: #2e3035;
-    opacity: 0.5;
+    fill: #eff0f5;
+    opacity: 0.8;
     font-size: 12px;
     letter-spacing: 0.3px;
-    margin-right: 2px;
+    margin-right: 5px;
 }
