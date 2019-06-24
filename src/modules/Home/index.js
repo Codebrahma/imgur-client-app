@@ -3,6 +3,7 @@ import React from 'react';
 import Loader from 'react-loader-spinner';
 import axios from 'axios';
 import { Grid } from 'react-flexbox-grid';
+// import { FixedSizeList as List } from 'react-window';
 import Card from '../../components/Card';
 import './Home.scss';
 
@@ -28,6 +29,7 @@ class Home extends React.Component {
   loadData = (currentPage) => {
     const { data } = this.state;
     const tempCurrentPage = currentPage + 1;
+    this.setState({ loading: true });
     axios({
       method: 'get',
       url: `https://api.imgur.com/3/gallery/hot/viral/all/${currentPage}`,
@@ -75,7 +77,7 @@ class Home extends React.Component {
       .catch(err => console.log(err));
   };
   handleOnScroll = () => {
-    const { currentPage } = this.state;
+    const { currentPage, loading } = this.state;
     const scrollTop =
       (document.documentElement && document.documentElement.scrollTop) ||
       document.body.scrollTop;
@@ -87,26 +89,51 @@ class Home extends React.Component {
     const scrolledToBottom =
       Math.ceil(scrollTop + clientHeight) >= scrollHeight;
     // console.log(scrollTop,scrollHeight,clientHeight,scrolledToBottom);
-    if (scrolledToBottom) {
-      this.setState({ loading: true });
+    if (scrolledToBottom && !loading) {
       this.loadData(currentPage);
     }
   };
+  // Row = ({index}) => {
+  //   const {data} = this.state;
+  //   // console.log( this.state);
+  //   // console.log(this.state.data[index] || "X" );
+
+  //   return(
+  //      <div className="cardListWrapper">
+  //         {/* {data && data.map(dataItem => ( */}
+  //           {/* <Card key={`${dataItem.id}+${dataItem.views}`} className="cardItem" data={dataItem} /> */}
+  //           <Card  className="cardItem" data={data[index]} />
+
+  //         {/* ))} */}
+  //       </div>
+  //     // <div>hello {index}</div>
+  //   )
+  // }
   render() {
     const { data, loading } = this.state;
     return (
       <Grid>
+        {/* { !loading &&
+        <List
+        height={700}
+        itemCount={1000}
+        itemSize={35}
+        width={1000}
+        >
+          {this.Row}
+       </List>
+      } */}
         <div className="cardListWrapper">
           {data.map(dataItem => (
-            <Card key={`${dataItem.id}+${dataItem.views}`} className="cardItem" data={dataItem} />
-          ))}
+            <Card key={dataItem.id} className="cardItem" data={dataItem} />
+            ))}
         </div>
         <div className="loader">
           {loading ? (
             <Loader type="Oval" color="#6BD700" height="80" width="80" />
-        ) : (
-          undefined
-        )}
+          ) : (
+            undefined
+          )}
         </div>
       </Grid>
     );
