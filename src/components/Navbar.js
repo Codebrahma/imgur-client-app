@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Grid } from 'react-flexbox-grid';
 import logo from '../svgs/logo';
 import { AuthContext } from '../context/AuthContext';
@@ -6,11 +7,11 @@ import Auth from '../modules/Auth';
 import ProfileNavbar from '../modules/ProfileNavbar';
 
 const Navbar = () => (
-  <nav>
+  <nav className="nav">
     <Grid>
-      <a href="/">
+      <Link to="/">
         {logo}
-      </a>
+      </Link>
 
       {/* <SearchModuleORComponent /> will come here. */}
 

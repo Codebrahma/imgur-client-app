@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import Button from '../../components/Button';
@@ -35,12 +36,12 @@ class ProfileNavbar extends Component {
       const { account_username: username, logOut } = this.context;
       return (
         <div className="profileNavbar flexCenterAlign">
-          <div className="profileNavbar__avatarContainer">
+          <Link to={`/user/${username}`} className="profileNavbar__avatarContainer">
             {this.state.avatar ?
               <img src={this.state.avatar} alt="profile" className="profileImage" />
             : null}
-          </div>
-          <span className="profileNavbar__username">{username}</span>
+          </Link>
+          {/* <span className="profileNavbar__username">{username}</span> */}
           <Button handleClick={logOut}>Logout</Button>
         </div>
       );
