@@ -17,14 +17,20 @@ class Home extends React.Component {
     };
   }
   componentWillMount() {
-    window.addEventListener('scroll', this.handleOnScroll);
+    window.addEventListener(
+      'scroll',
+      this.handleDebounce(this.handleOnScroll, 200),
+    );
   }
   componentDidMount() {
     const { currentPage } = this.state;
     this.loadData(currentPage);
   }
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleOnScroll);
+    window.removeEventListener(
+      'scroll',
+      this.handleDebounce(this.handleOnScroll, 200),
+    );
   }
   loadData = (currentPage) => {
     const { data } = this.state;
@@ -76,6 +82,18 @@ class Home extends React.Component {
       })
       .catch(err => console.log(err));
   };
+  // function for throttle...
+  handleDebounce = (fn, delay) => {
+    let timeoutId = null;
+    return function () {
+      if (timeoutId) { clearTimeout(timeoutId); timeoutId = null; return; }
+      const args = arguments;
+      const context = this;
+      timeoutId = setTimeout(() => {
+        fn.apply(context, args);
+      }, delay);
+    };
+  };
   handleOnScroll = () => {
     const { currentPage, loading } = this.state;
     const scrollTop =
@@ -93,40 +111,14 @@ class Home extends React.Component {
       this.loadData(currentPage);
     }
   };
-  // Row = ({index}) => {
-  //   const {data} = this.state;
-  //   // console.log( this.state);
-  //   // console.log(this.state.data[index] || "X" );
-
-  //   return(
-  //      <div className="cardListWrapper">
-  //         {/* {data && data.map(dataItem => ( */}
-  //           {/* <Card key={`${dataItem.id}+${dataItem.views}`} className="cardItem" data={dataItem} /> */}
-  //           <Card  className="cardItem" data={data[index]} />
-
-  //         {/* ))} */}
-  //       </div>
-  //     // <div>hello {index}</div>
-  //   )
-  // }
   render() {
     const { data, loading } = this.state;
     return (
       <Grid>
-        {/* { !loading &&
-        <List
-        height={700}
-        itemCount={1000}
-        itemSize={35}
-        width={1000}
-        >
-          {this.Row}
-       </List>
-      } */}
         <div className="cardListWrapper">
           {data.map(dataItem => (
             <Card key={dataItem.id} className="cardItem" data={dataItem} />
-            ))}
+          ))}
         </div>
         <div className="loader">
           {loading ? (
