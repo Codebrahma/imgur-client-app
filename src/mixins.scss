@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Poppins:500,700&display=swap');
+
+@mixin font-lato($size: false, $colour: false, $weight: false,  $lh: false) {
+    font-family: 'Lato', sans-serif;
+    @if $size { font-size: $size; }
+    @if $colour { color: $colour; }
+    @if $weight { font-weight: $weight; }
+    @if $lh { line-height: $lh; }
+}
+
+@mixin font-poppins($size: false, $colour: false, $weight: false,  $lh: false) {
+    font-family: 'Poppins', sans-serif;
+    @if $size { font-size: $size; }
+    @if $colour { color: $colour; }
+    @if $weight { font-weight: $weight; }
+    @if $lh { line-height: $lh; }
+}
