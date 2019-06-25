@@ -51,6 +51,7 @@
     "react-router-dom": "^5.0.1",
     "react-loader-spinner": "^2.3.0",
     "react-lazy-load": "^3.0.13",
-    "react-window": "^1.8.3"
+    "react-window": "^1.8.3",
+    "throttle-debounce": "^2.1.0"
   }
 }

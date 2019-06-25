@@ -3,7 +3,7 @@ import React from 'react';
 import Loader from 'react-loader-spinner';
 import axios from 'axios';
 import { Grid } from 'react-flexbox-grid';
-// import { FixedSizeList as List } from 'react-window';
+import { debounce } from 'throttle-debounce';
 import Card from '../../components/Card';
 import './Home.scss';
 
@@ -19,7 +19,7 @@ class Home extends React.Component {
   componentWillMount() {
     window.addEventListener(
       'scroll',
-      this.handleDebounce(this.handleOnScroll, 200),
+      debounce(300, this.handleOnScroll),
     );
   }
   componentDidMount() {
@@ -29,7 +29,7 @@ class Home extends React.Component {
   componentWillUnmount() {
     window.removeEventListener(
       'scroll',
-      this.handleDebounce(this.handleOnScroll, 200),
+      debounce(300, this.handleOnScroll),
     );
   }
   loadData = (currentPage) => {
@@ -81,18 +81,6 @@ class Home extends React.Component {
         });
       })
       .catch(err => console.log(err));
-  };
-  // function for throttle...
-  handleDebounce = (fn, delay) => {
-    let timeoutId = null;
-    return function () {
-      if (timeoutId) { clearTimeout(timeoutId); timeoutId = null; return; }
-      const args = arguments;
-      const context = this;
-      timeoutId = setTimeout(() => {
-        fn.apply(context, args);
-      }, delay);
-    };
   };
   handleOnScroll = () => {
     const { currentPage, loading } = this.state;
