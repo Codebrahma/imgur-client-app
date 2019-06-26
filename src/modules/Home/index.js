@@ -17,9 +17,10 @@ class Home extends React.Component {
     };
   }
   componentWillMount() {
+    this.tempDebounceFuncVariable = debounce(300, this.handleOnScroll)
     window.addEventListener(
       'scroll',
-      debounce(300, this.handleOnScroll),
+      this.tempDebounceFuncVariable,
     );
   }
   componentDidMount() {
@@ -29,7 +30,7 @@ class Home extends React.Component {
   componentWillUnmount() {
     window.removeEventListener(
       'scroll',
-      debounce(300, this.handleOnScroll),
+      this.tempDebounceFuncVariable.cancel(),
     );
   }
   loadData = (currentPage) => {

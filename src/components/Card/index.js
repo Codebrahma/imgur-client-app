@@ -1,5 +1,7 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import LazyLoad from 'react-lazy-load';
+import { withRouter } from 'react-router-dom';
 import './card.scss';
 import upVote from '../../svgs/upVote';
 import downVote from '../../svgs/downVote';
@@ -11,13 +13,17 @@ class Card extends React.Component {
     super();
     this.state = {};
   }
+  handleCardClick = (data) => {
+    // console.log(this.props);
+    this.props.history.push(`/gallery/${data.id}`,{...data});
+  }
   render() {
     const { data } = this.props;
     return (
-      <div className="cardWrapper">
+      <div className="cardWrapper" onClick={() => this.handleCardClick(data)}>
         {data && data.images && data.images[0].type === 'video/mp4' ? (
           <LazyLoad>
-          <video autoPlay loop className="media" muted>
+            <video autoPlay loop className="media" muted>
             <source src={data && data.images && data.images[0].mp4} />
           </video>
           </LazyLoad>
@@ -58,4 +64,4 @@ class Card extends React.Component {
     );
   }
 }
-export default Card;
+export default withRouter(Card);
