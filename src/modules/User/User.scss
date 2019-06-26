@@ -72,5 +72,24 @@
                 }
             }
         }
+
+    }
+
+    &__section {
+
+        &--about {
+            padding: 1rem;
+            
+            &__heading {
+                @include font-poppins();
+                text-transform: uppercase;
+                color: #323232;
+                margin: 0;
+            }
+
+            &__content {
+                margin: 0.5rem 0;
+            }
+        }
     }
 }

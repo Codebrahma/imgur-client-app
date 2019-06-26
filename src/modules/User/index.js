@@ -17,7 +17,8 @@ class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: null,
+      data: {},
+      isFetching: true,
     };
   }
 
@@ -30,6 +31,8 @@ class User extends Component {
     }).then((res) => {
       this.setState({
         data: res.data.data,
+        isFetching: false,
+        ownProfile: this.context.account_username === username,
       });
     });
   }
@@ -74,12 +77,12 @@ class User extends Component {
           </Grid>
         </header>
 
-        <section>
+        <section className="userpage__section">
           <Suspense fallback={<div>loading...</div>}>
-            <Route path={`${this.props.match.url}/about`} component={About} />
             <Route path={`${this.props.match.url}/posts`} component={Posts} />
             <Route path={`${this.props.match.url}/favorites`} component={Favorites} />
             <Route path={`${this.props.match.url}/comments`} component={Comments} />
+            <Route path={`${this.props.match.url}/about`} render={props => <About {...props} data={data} ownProfile={this.state.ownProfile} isFetching={this.state.isFetching} />} />
           </Suspense>
         </section>
 

@@ -7,7 +7,7 @@ body {
 }
 
 :root {
-  @include font-lato($size: 18px);
+  @include font-lato($size: 18px, $color: #282828);
 }
 
 .auth {
