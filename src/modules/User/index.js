@@ -1,11 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
+import { Route, NavLink } from 'react-router-dom';
 import { Grid } from 'react-flexbox-grid';
-import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { match } from '../../routerPropTypes';
 import { AuthContext } from '../../context/AuthContext';
 import './User.scss';
-// import Nav from './Nav';
+
+
+const Posts = lazy(() => import('./Posts'));
+const Favorites = lazy(() => import('./Favorites'));
+const Comments = lazy(() => import('./Comments'));
+const About = lazy(() => import('./About'));
 
 class User extends Component {
   static contextType = AuthContext;
@@ -23,7 +28,6 @@ class User extends Component {
       url: `https://api.imgur.com/3/account/${username}`,
       headers: { Authorization: `Client-ID ${process.env.CLIENT_ID}` },
     }).then((res) => {
-      console.log(res);
       this.setState({
         data: res.data.data,
       });
@@ -51,7 +55,6 @@ class User extends Component {
                 }
               </div>
             </div>
-            {/* <Nav /> */}
             <nav className="userpage__nav">
               <ul>
                 <li>
@@ -71,7 +74,14 @@ class User extends Component {
           </Grid>
         </header>
 
-        <section className="height" />
+        <section>
+          <Suspense fallback={<div>loading...</div>}>
+            <Route path={`${this.props.match.url}/about`} component={About} />
+            <Route path={`${this.props.match.url}/posts`} component={Posts} />
+            <Route path={`${this.props.match.url}/favorites`} component={Favorites} />
+            <Route path={`${this.props.match.url}/comments`} component={Comments} />
+          </Suspense>
+        </section>
 
       </div>
     );

@@ -1,11 +1,9 @@
 @import '../../mixins.scss';
 
 .userpage {
-    // height: 100%;
     
     &__header {
         background: #dddddd;
-        // height: 35vh;
         padding: 1rem 0;
         
         
@@ -43,7 +41,6 @@
     }
     
     &__nav {
-        // background: grey;
         padding-top: 1rem;
 
         ul {
@@ -76,9 +73,4 @@
             }
         }
     }
-}
-
-
-.height {
-    height: 100vh;
 }

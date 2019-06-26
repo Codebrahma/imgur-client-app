@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
+import { Switch, Route, BrowserRouter as Router, Redirect } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 import AuthContextProvider from './context/AuthContext';
 // import { location } from './routerPropTypes';
@@ -65,6 +65,7 @@ const Routes = () => (
 
             <Route path="/auth_cb" component={AuthCallback} />
             <Route path="/dashboard" component={Dashboard} />
+            <Redirect exact from="/user/:username" to="/user/:username/about" />
             <Route path="/user/:username" component={User} />
             {/* <PrivateRoute path="/private" component={Private} /> */}
           </Switch>
