@@ -19,12 +19,21 @@ const SvgHoc = (WrappedComponent) => {
           }
         }
 
+        handleEnter = (e) => {
+          if (e.key === 'Enter') {
+            this.handleClick();
+          }
+        }
+
         render() {
           const { classModifier } = this.props;
           return (
             <span
               className={classModifier ? `svgContainer svgContainer--${classModifier}` : 'svgContainer'}
               onClick={this.addClickHandler}
+              onKeyDown={this.handleEnter}
+              role="button"
+              tabIndex={0}
             >
               <WrappedComponent />
             </span>
