@@ -7,43 +7,50 @@ import upVote from '../../svgs/upVote';
 import downVote from '../../svgs/downVote';
 import comment from '../../svgs/comment';
 import view from '../../svgs/view';
+import { AuthContext } from '../../context/AuthContext';
 
 class Card extends React.Component {
+  static contextType = AuthContext;
   constructor() {
     super();
     this.state = {};
   }
   handleCardClick = (data) => {
-    // console.log(this.props);
-    this.props.history.push(`/gallery/${data.id}`,{...data});
-  }
+    this.props.history.push(`/gallery/${data.id}`, { ...data });
+  };
   render() {
     const { data } = this.props;
+    const { access_token } = this.context;
     return (
-      <div className="cardWrapper" onClick={() => this.handleCardClick(data)}>
-        {data && data.images && data.images[0].type === 'video/mp4' ? (
-          <LazyLoad>
-            <video autoPlay loop className="media" muted>
-            <source src={data && data.images && data.images[0].mp4} />
-          </video>
-          </LazyLoad>
-        ) : (
-          <LazyLoad>
+      <div className="cardWrapper">
+        <LazyLoad >
+          {data && data.images && data.images[0].type === 'video/mp4' ? (
+            <video
+              autoPlay
+              loop
+              className="media"
+              muted
+              onClick={() => this.handleCardClick(data)}
+            >
+              <source src={data && data.images && data.images[0].mp4} />
+            </video>
+          ) : (
             <img
               className="media"
+              onClick={() => this.handleCardClick(data)}
               src={
                 (data && data.images && data.images[0].link) ||
                 (data && data.link)
               }
               alt="img"
             />
-          </LazyLoad>
-        )}
+          )}
+        </LazyLoad>
         <div className="detailsWrapper">
           <div className="title">{data && data.title}</div>
           <div className="countWrapper">
             <div className="StatContainer">
-              <div className="IconContainer">{upVote}</div>
+              <div className="IconContainer" onClick={()=>alert('clicked')}>{upVote}</div>
               <span>{data && data.ups}</span>
             </div>
             <div className="StatContainer">

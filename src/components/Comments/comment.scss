@@ -1,0 +1,28 @@
+.commentWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-radius: 6px 6px 6px 6px;
+  background-color: #2c2f34;
+  color:white;
+  margin-bottom: 10px;
+  padding: 20px;
+}
+.detailsCommentWrapper {
+    display: flex;
+    flex-direction: row;
+}
+.commentHeaderItem {
+    font-size: 10px;
+    font-weight: 700;
+    margin-right: 20px;
+}
+.commentText {
+    font-size: 15px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    overflow: hidden;
+}
+.commentImage {
+    max-width: 10%;
+}

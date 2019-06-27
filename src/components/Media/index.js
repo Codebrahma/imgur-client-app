@@ -6,26 +6,20 @@ import './media.scss';
 class Media extends React.Component {
   constructor() {
     super();
-    this.state = {
-
-    };
+    this.state = {};
   }
   render() {
     const { content } = this.props;
     return (
-      <div>
+      <LazyLoad>
         {content.type === 'video/mp4' ? (
-          <LazyLoad>
-            <video autoPlay loop className="media" controls autoPlay>
-              <source src={content.mp4} />
-            </video>
-          </LazyLoad>
+          <video autoPlay loop className="media" controls autoPlay>
+            <source src={content.mp4} />
+          </video>
         ) : (
-          <LazyLoad>
-            <img className="image" src={content.link} alt="img" />
-          </LazyLoad>
+          <img className="image" src={content.link} alt="img" />
         )}
-      </div>
+      </LazyLoad>
     );
   }
 }

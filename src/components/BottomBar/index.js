@@ -14,9 +14,9 @@ class BottomBar extends React.Component {
   render() {
     return (
       <div className="bottomWrapper">
-        <div className="IconContainer">{upVote}</div>
-        <div className="IconContainer">{downVote}</div>
-        <div className="IconContainer">{favorite}</div>
+        <div className="IconContainerBottom">{upVote}</div>
+        <div className="IconContainerBottom">{downVote}</div>
+        <div className="IconContainerBottom">{favorite}</div>
       </div>
     );
   }
