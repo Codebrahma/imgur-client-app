@@ -23,6 +23,18 @@ class User extends Component {
   }
 
   componentDidMount() {
+    this.fetchUserData();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { username: currentUserName } = this.props.match.params;
+    const { username: previousUserName } = prevProps.match.params;
+
+    if (currentUserName !== previousUserName) { this.fetchUserData(); }
+  }
+
+  fetchUserData = () => {
+    this.setState({ isFetching: true });
     const { username } = this.props.match.params;
     axios({
       method: 'get',
@@ -38,7 +50,7 @@ class User extends Component {
   }
 
   render() {
-    const { data } = this.state;
+    const { data, isFetching } = this.state;
     return (
       <div className="userpage">
 
@@ -46,11 +58,11 @@ class User extends Component {
           <Grid>
             <div className="userpage__info">
               <div className="userpage__info__image">
-                { data && <img src={data.avatar} alt={`${data.url}'s Avatar`} /> }
+                { !isFetching && <img src={data.avatar} alt={`${data.url}'s Avatar`} /> }
               </div>
               <div>
                 <h1>{this.props.match.params.username}</h1>
-                { data &&
+                { !isFetching &&
                   <div className="userpage__info__stats">
                     <span>{`${data.reputation} pts`}</span>
                     <span>{data.reputation_name}</span>
@@ -78,7 +90,7 @@ class User extends Component {
         </header>
 
         <section className="userpage__section">
-          <Suspense fallback={<div>loading...</div>}>
+          <Suspense fallback={<div />}>
             <Route path={`${this.props.match.url}/posts`} component={Posts} />
             <Route path={`${this.props.match.url}/favorites`} component={Favorites} />
             <Route path={`${this.props.match.url}/comments`} component={Comments} />
