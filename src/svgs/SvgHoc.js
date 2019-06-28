@@ -19,6 +19,15 @@ const SvgHoc = (WrappedComponent) => {
           }
         }
 
+        addClassName = () => {
+          const { classModifier, classModifiers } = this.props;
+          const classes = ['svgContainer'];
+
+          if (classModifier) { classes.push(`svgContainer--${classModifier}`); }
+          if (classModifiers.length > 0) { classModifiers.forEach(mod => classes.push(`svgContainer--${mod}`)); }
+          return classes.join(' ');
+        }
+
         handleEnter = (e) => {
           if (e.key === 'Enter') {
             this.handleClick();
@@ -26,10 +35,9 @@ const SvgHoc = (WrappedComponent) => {
         }
 
         render() {
-          const { classModifier } = this.props;
           return (
             <span
-              className={classModifier ? `svgContainer svgContainer--${classModifier}` : 'svgContainer'}
+              className={this.addClassName()}
               onClick={this.addClickHandler}
               onKeyDown={this.handleEnter}
               role="button"
@@ -44,12 +52,13 @@ const SvgHoc = (WrappedComponent) => {
     conditionalEnable: PropTypes.bool,
     handleClick: PropTypes.func.isRequired,
     classModifier: PropTypes.string,
+    classModifiers: PropTypes.arrayOf(PropTypes.string),
   };
 
   SuperChargedSvg.defaultProps = {
     conditionalEnable: false,
     classModifier: '',
-
+    classModifiers: [],
   };
 
   return SuperChargedSvg;
