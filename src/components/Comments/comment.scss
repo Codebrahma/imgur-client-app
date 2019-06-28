@@ -18,6 +18,9 @@
     margin-right: 20px;
 }
 .commentText {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     font-size: 15px;
     padding-top: 20px;
     padding-bottom: 10px;
