@@ -11,32 +11,28 @@ class ProfileNavbar extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        avatar: localStorage.getItem('avatar'),
+        avatar: null,
       };
     }
 
     componentDidMount() {
-      if (!localStorage.getItem('data') || this.state.avatar) {
-        const { account_username: username } = this.context;
-        axios({
-          method: 'get',
-          url: `https://api.imgur.com/3/account/${username}`,
-          headers: { Authorization: `Client-ID ${process.env.CLIENT_ID}` },
-        }).then((res) => {
-          localStorage.setItem('data', JSON.stringify(res.data.data));
-          localStorage.setItem('avatar', res.data.data.avatar);
-          this.setState({
-            avatar: res.data.data.avatar,
-          });
+      const { account_username: username } = this.context;
+      axios({
+        method: 'get',
+        url: `https://api.imgur.com/3/account/${username}`,
+        headers: { Authorization: `Client-ID ${process.env.CLIENT_ID}` },
+      }).then((res) => {
+        this.setState({
+          avatar: res.data.data.avatar,
         });
-      }
+      });
     }
 
     render() {
       const { account_username: username, logOut } = this.context;
       return (
         <div className="profileNavbar flexCenterAlign">
-          <Link to={`/user/${username}`} className="profileNavbar__avatarContainer">
+          <Link to={`/user/${username}/about`} className="profileNavbar__avatarContainer">
             {this.state.avatar ?
               <img src={this.state.avatar} alt="profile" className="profileImage" />
             : null}
