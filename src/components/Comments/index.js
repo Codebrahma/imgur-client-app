@@ -7,12 +7,11 @@ class Comments extends React.Component {
     this.state = {};
   }
   render() {
-    console.log(this.props.commentData);
     const { commentData } = this.props;
     return (
       <div>
         {commentData &&  commentData.map(comment => (
-          <Comment comment={comment} />
+          <Comment key={comment.id} comment={comment} />
         ))}
       </div>
     );

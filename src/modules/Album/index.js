@@ -35,6 +35,7 @@ class Album extends React.Component {
       comment,
       author: account_username,
       id,
+      points: 1,
     };
     const tempCommentDataObj = [newCommentObj, ...commentData];
     this.setState({ commentData: tempCommentDataObj });
