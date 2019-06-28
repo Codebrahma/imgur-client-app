@@ -1,0 +1,20 @@
+.profileNavbar {
+
+    &__avatarContainer {
+        height: 3rem;
+        width: 3rem;
+        border-radius: 100%;
+        overflow: hidden;
+        margin-right: 1rem;
+        // background: white;
+    
+        img {
+            height: 100%;
+            widows: 100%;
+        }
+    }
+
+    &__username {
+        margin-right: 1rem;
+    }
+}
