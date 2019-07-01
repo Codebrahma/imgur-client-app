@@ -50,3 +50,25 @@
     margin-left: 1rem;
     margin-right: 0.5rem;
 }
+.ellipsisIcon{
+    position: relative;
+}
+.floatingOption {
+    position: absolute;
+    display: none;
+}
+.activeOption{
+    display: flex;
+    flex-direction: column;
+    background-color: #F2F2F2;
+    color: black;
+    justify-content: space-around;
+    font-size: 15px;
+    padding: 0 10px;
+    border-radius: 2px;
+    font-weight: 100;
+}
+.optionItem {
+    margin: 0.5rem 0;
+    cursor: pointer;
+}

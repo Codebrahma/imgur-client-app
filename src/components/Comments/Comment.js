@@ -15,6 +15,7 @@ class Comment extends React.Component {
       showCommentBox: false,
       replies: props.comment.children,
       showReply: false,
+      showOption: false,
     };
   }
   handleUpdateReply = (data) => {
@@ -45,17 +46,32 @@ class Comment extends React.Component {
     } = this.props.comment;
     const { replyBox } = this.props;
     const {
-      points, showCommentBox, replies, showReply,
+      points, showCommentBox, replies, showReply, showOption,
     } = this.state;
     const { strippedComment, links } = this.extractLinksAndComments(comment);
     return (
       <div className={replyBox && 'indentCommentBox'}>
         <div className="commentWrapper">
           <div className="detailsCommentWrapper">
-            <Link className="commentHeaderItem" to={`/user/${author}/posts` } target="_blank">{author}</Link>
+            <Link
+              className="commentHeaderItem"
+              to={`/user/${author}/posts`}
+              target="_blank"
+            >
+              {author}
+            </Link>
             <div className="commentHeaderItem">{points} pts</div>
             <div className="commentHeaderItem">
-              <FontAwesomeIcon icon="ellipsis-h" className="ml_05" focusable />
+              <FontAwesomeIcon
+                icon="ellipsis-h"
+                className="ml_05 ellipsisIcon"
+                focusable
+                onClick={() => this.setState({ showOption: !showOption })}
+              />
+              <div className={showOption ? 'floatingOption activeOption' : 'floatingOption'} >
+                <div className="optionItem">Report user</div>
+                <div className="optionItem">Mute User</div>
+              </div>
             </div>
           </div>
           <div className="commentText">
@@ -99,12 +115,19 @@ class Comment extends React.Component {
             className="expandReply"
             onClick={() => this.setState({ showReply: !showReply })}
           >
-            {
-              showReply ?
-                <FontAwesomeIcon icon="minus" className="ml_05 expandReplyIcon" focusable />
-              :
-                <FontAwesomeIcon icon="plus" className="ml_05 expandReplyIcon" focusable />
-            }
+            {showReply ? (
+              <FontAwesomeIcon
+                icon="minus"
+                className="ml_05 expandReplyIcon"
+                focusable
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon="plus"
+                className="ml_05 expandReplyIcon"
+                focusable
+              />
+            )}
             {showReply ? 'collapse' : `${replies.length} reply`}
           </span>
         )}
