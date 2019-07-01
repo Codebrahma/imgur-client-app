@@ -1,5 +1,7 @@
 import React from 'react';
 import LazyLoad from 'react-lazy-load';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './comment.scss';
 import CommentBox from '../CommentBox';
 
@@ -41,18 +43,20 @@ class Comment extends React.Component {
     const {
       author, comment, image_id, id,
     } = this.props.comment;
-    const { reply } = this.props;
+    const { replyBox } = this.props;
     const {
       points, showCommentBox, replies, showReply,
     } = this.state;
     const { strippedComment, links } = this.extractLinksAndComments(comment);
     return (
-      <div className={reply && 'indentCommentBox'}>
+      <div className={replyBox && 'indentCommentBox'}>
         <div className="commentWrapper">
           <div className="detailsCommentWrapper">
-            <div className="commentHeaderItem">{author}</div>
+            <Link className="commentHeaderItem" to={`/user/${author}/posts` } target="_blank">{author}</Link>
             <div className="commentHeaderItem">{points} pts</div>
-            <div className="commentHeaderItem">...</div>
+            <div className="commentHeaderItem">
+              <FontAwesomeIcon icon="ellipsis-h" className="ml_05" focusable />
+            </div>
           </div>
           <div className="commentText">
             {strippedComment}
@@ -73,9 +77,13 @@ class Comment extends React.Component {
                   )}
                 </LazyLoad>
               ))}
-            <div onClick={() => this.setState({ showCommentBox: !showCommentBox })}>
-              Reply
-            </div>
+            <FontAwesomeIcon
+              icon="reply"
+              onClick={() => this.setState({ showCommentBox: !showCommentBox })}
+              className="ml_05"
+              focusable
+              className="mi_05 replyIcon replyIconActive"
+            />
           </div>
           {showCommentBox && (
             <CommentBox
@@ -87,14 +95,23 @@ class Comment extends React.Component {
           )}
         </div>
         {replies && replies.length > 0 && (
-          <span onClick={() => this.setState({ showReply: !showReply })}>
-            + {replies.length}
+          <span
+            className="expandReply"
+            onClick={() => this.setState({ showReply: !showReply })}
+          >
+            {
+              showReply ?
+                <FontAwesomeIcon icon="minus" className="ml_05 expandReplyIcon" focusable />
+              :
+                <FontAwesomeIcon icon="plus" className="ml_05 expandReplyIcon" focusable />
+            }
+            {showReply ? 'collapse' : `${replies.length} reply`}
           </span>
         )}
         <div>
           {showReply &&
             replies.map(reply => (
-              <Comment reply comment={reply} key={reply.id} />
+              <Comment replyBox comment={reply} key={reply.id} />
             ))}
         </div>
       </div>
