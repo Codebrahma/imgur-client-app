@@ -1,10 +1,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
-import LazyLoad from 'react-lazy-load';
 import { withRouter } from 'react-router-dom';
+import LazyLoad from 'react-lazy-load';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './card.scss';
+import PropTypes from 'prop-types';
 import { AuthContext } from '../../context/AuthContext';
+import { history } from '../../routerPropTypes';
+import './card.scss';
 
 class Card extends React.Component {
   static contextType = AuthContext;
@@ -69,4 +71,19 @@ class Card extends React.Component {
     );
   }
 }
+
+Card.propTypes = {
+  history: history.isRequired,
+  data: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    ups: PropTypes.number.isRequired,
+    downs: PropTypes.number.isRequired,
+    commentCount: PropTypes.number.isRequired,
+    views: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    link: PropTypes.string.isRequired,
+    images: PropTypes.array,
+  }).isRequired,
+};
+
 export default withRouter(Card);
