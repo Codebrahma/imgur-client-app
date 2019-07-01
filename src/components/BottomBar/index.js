@@ -1,7 +1,5 @@
 import React from 'react';
-import upVote from '../../svgs/upVote';
-import downVote from '../../svgs/downVote';
-import favorite from '../../svgs/favorite';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './bottomBar.scss';
 
 class BottomBar extends React.Component {
@@ -14,9 +12,10 @@ class BottomBar extends React.Component {
   render() {
     return (
       <div className="bottomWrapper">
-        <div className="IconContainerBottom">{upVote}</div>
-        <div className="IconContainerBottom">{downVote}</div>
-        <div className="IconContainerBottom">{favorite}</div>
+        {/* <div className="IconContainerBottom">{upVote}</div> */}
+        <FontAwesomeIcon icon="arrow-alt-circle-up" />
+        <FontAwesomeIcon icon="arrow-alt-circle-down" />
+        <FontAwesomeIcon icon="heart" />
       </div>
     );
   }

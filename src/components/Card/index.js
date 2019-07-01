@@ -2,11 +2,8 @@
 import React from 'react';
 import LazyLoad from 'react-lazy-load';
 import { withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './card.scss';
-import upVote from '../../svgs/upVote';
-import downVote from '../../svgs/downVote';
-import comment from '../../svgs/comment';
-import view from '../../svgs/view';
 import { AuthContext } from '../../context/AuthContext';
 
 class Card extends React.Component {
@@ -50,19 +47,20 @@ class Card extends React.Component {
           <div className="title">{data && data.title}</div>
           <div className="countWrapper">
             <div className="StatContainer">
-              <div className="IconContainer" onClick={()=>alert('clicked')}>{upVote}</div>
+              {/* <div className="IconContainer" onClick={()=>alert('clicked')}>{upVote}</div> */}
+              <FontAwesomeIcon icon="arrow-alt-circle-up" />
               <span>{data && data.ups}</span>
             </div>
             <div className="StatContainer">
-              <div className="IconContainer">{downVote}</div>
+              <FontAwesomeIcon icon="arrow-alt-circle-down" />
               <span>{data && data.downs}</span>
             </div>
             <div className="StatContainer">
-              <div className="IconContainer">{comment}</div>
+              <FontAwesomeIcon icon="comment" />
               <span>{data && data.commentCount}</span>
             </div>
             <div className="StatContainer">
-              <div className="IconContainer">{view}</div>
+              <FontAwesomeIcon icon="eye" />
               <span>{data && data.views}</span>
             </div>
           </div>
