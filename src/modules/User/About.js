@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Grid, Col, Row } from 'react-flexbox-grid';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AuthContext } from '../../context/AuthContext';
-import Edit from '../../svgs/Edit';
+// import Edit from '../../svgs/Edit';
 import Button from '../../components/Button';
 
 class About extends Component {
@@ -71,7 +72,8 @@ class About extends Component {
                        <div className="userpage__section--about__headingContainer">
                          <div>
                            <h4 className="userpage__section--about__heading">About</h4>
-                           <Edit handleClick={this.startEditing} conditionalEnable classModifier="horizontalMargin" />
+                           <FontAwesomeIcon icon="edit" onClick={this.startEditing} className="ml5" focusable />
+                           {/* <Edit handleClick={this.startEditing} conditionalEnable classModifier="horizontalMargin" /> */}
                          </div>
                          { this.state.isEditing &&
                          <div>
