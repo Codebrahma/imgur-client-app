@@ -72,7 +72,7 @@ class About extends Component {
                        <div className="userpage__section--about__headingContainer">
                          <div>
                            <h4 className="userpage__section--about__heading">About</h4>
-                           <FontAwesomeIcon icon="edit" onClick={this.startEditing} className="ml5" focusable />
+                           <FontAwesomeIcon icon="edit" onClick={this.startEditing} className="ml_05" focusable />
                            {/* <Edit handleClick={this.startEditing} conditionalEnable classModifier="horizontalMargin" /> */}
                          </div>
                          { this.state.isEditing &&

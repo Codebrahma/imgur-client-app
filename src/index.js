@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
 import Routes from './routes';
+import './index.scss';
 import './fontawesome-lib';
 import './svgs.scss';
 
