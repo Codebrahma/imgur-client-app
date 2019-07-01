@@ -41,12 +41,13 @@ class Comment extends React.Component {
     const {
       author, comment, image_id, id,
     } = this.props.comment;
+    const { reply } = this.props;
     const {
       points, showCommentBox, replies, showReply,
     } = this.state;
     const { strippedComment, links } = this.extractLinksAndComments(comment);
     return (
-      <div>
+      <div className={reply && 'indentCommentBox'}>
         <div className="commentWrapper">
           <div className="detailsCommentWrapper">
             <div className="commentHeaderItem">{author}</div>
@@ -93,7 +94,7 @@ class Comment extends React.Component {
         <div>
           {showReply &&
             replies.map(reply => (
-              <Comment text="from reply" comment={reply} key={reply.id} />
+              <Comment reply comment={reply} key={reply.id} />
             ))}
         </div>
       </div>
