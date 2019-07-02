@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactModal from 'react-modal';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './ReportUser.scss';
 import { AuthContext } from '../../context/AuthContext';
@@ -115,7 +114,7 @@ class ReportUser extends React.Component {
         <div className="reportUserFooter">
           <div className="reportOptionText">
             <span>For More info please read the</span>
-            <Link to="https://imgur.com/rules">Community Rules</Link>
+            <a href="https://imgur.com/rules" target="_blank" rel="noopener noreferrer" >Community Rules</a>
           </div>
           <button onClick={this.handleReportUser} className="reportButton">
             Report
