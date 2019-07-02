@@ -2,8 +2,11 @@ import React from 'react';
 import LazyLoad from 'react-lazy-load';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './comment.scss';
 import CommentBox from '../CommentBox';
+import ReportUser from '../Modal/ReportUser';
 
 class Comment extends React.Component {
   constructor(props) {
@@ -14,6 +17,7 @@ class Comment extends React.Component {
       replies: props.comment.children,
       showReply: false,
       showOption: false,
+      showReportModal: false,
     };
   }
   componentDidMount() {
@@ -25,12 +29,12 @@ class Comment extends React.Component {
   }
   setWrapperRef = (node) => {
     this.wrapperRef = node;
-  }
+  };
   handleClickOutsideOption = (event) => {
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
       this.setState({ showOption: false });
     }
-  }
+  };
 
   handleUpdateReply = (data) => {
     const { replies } = this.state;
@@ -53,11 +57,16 @@ class Comment extends React.Component {
     );
     return { strippedComment, links };
   };
+  notify = () => toast('Reported Successfully !');
+  handleCloseReportModal = (success) => {
+    success && this.notify();
+    this.setState({ showReportModal: false });
+  };
 
   render() {
     const {
-      author, comment, image_id, id,
-    } = this.props.comment;
+ author, comment, image_id, id 
+} = this.props.comment;
     const { replyBox } = this.props;
     const {
       points,
@@ -65,10 +74,15 @@ class Comment extends React.Component {
       replies,
       showReply,
       showOption,
+      showReportModal,
     } = this.state;
     const { strippedComment, links } = this.extractLinksAndComments(comment);
     return (
       <div className={replyBox && 'indentCommentBox'}>
+        {showReportModal && (
+          <ReportUser handleCloseReportModal={this.handleCloseReportModal} commentId={id} />
+        )}
+        <ToastContainer />
         <div className="commentWrapper">
           <div className="detailsCommentWrapper">
             <Link
@@ -91,7 +105,12 @@ class Comment extends React.Component {
                   showOption ? 'floatingOption activeOption' : 'floatingOption'
                 }
               >
-                <div className="optionItem">Report user</div>
+                <div
+                  className="optionItem"
+                  onClick={() => this.setState({ showReportModal: true })}
+                >
+                  Report user
+                </div>
                 <div className="optionItem">Mute User</div>
               </div>
             </div>
