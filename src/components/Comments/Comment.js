@@ -3,6 +3,7 @@ import LazyLoad from 'react-lazy-load';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ToastContainer, toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 import 'react-toastify/dist/ReactToastify.css';
 import './comment.scss';
 import CommentBox from '../CommentBox';
@@ -59,14 +60,14 @@ class Comment extends React.Component {
   };
   notify = () => toast('Reported Successfully !');
   handleCloseReportModal = (success) => {
-    success && this.notify();
+    if (success) { this.notify(); }
     this.setState({ showReportModal: false });
   };
 
   render() {
     const {
- author, comment, image_id, id 
-} = this.props.comment;
+      author, comment, image_id, id,
+    } = this.props.comment;
     const { replyBox } = this.props;
     const {
       points,
@@ -122,7 +123,6 @@ class Comment extends React.Component {
                 <LazyLoad key={id}>
                   {link.includes('.mp4') ? (
                     <video autoPlay loop muted>
-                      {/* <track src={link} kind="caption" srcLang="en" label="english_caption" /> */}
                       <source src={link} />
                     </video>
                   ) : (
@@ -181,5 +181,13 @@ class Comment extends React.Component {
     );
   }
 }
+Comment.propTypes = {
+  author: PropTypes.string.isRequired,
+  comment: PropTypes.string.isRequired,
+  replyBox: PropTypes.bool,
+};
+Comment.defaultProps = {
+  replyBox: false,
+};
 
 export default Comment;
