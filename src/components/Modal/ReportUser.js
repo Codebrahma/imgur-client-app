@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import './ReportUser.scss';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -24,7 +25,7 @@ class ReportUser extends React.Component {
     const { slectedOption } = this.state;
     const { access_token } = this.context;
     e.preventDefault();
-    if(slectedOption.length===0) return;
+    if (slectedOption.length === 0) return;
     axios({
       url: `https://api.imgur.com/3/comment/${commentId}/report`,
       method: 'post',
@@ -44,7 +45,6 @@ class ReportUser extends React.Component {
   };
   render() {
     const { open } = this.state;
-    console.log(this.props);
     return (
       <ReactModal isOpen={open} ariaHideApp={false} className="modalWrapper">
         <div className="reportModalHeader">
@@ -124,5 +124,8 @@ class ReportUser extends React.Component {
     );
   }
 }
-
+ReportUser.propTypes = {
+  commentId: PropTypes.string.isRequired,
+  handleCloseReportModal: PropTypes.func.isRequired,
+};
 export default ReportUser;
