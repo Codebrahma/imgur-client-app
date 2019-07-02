@@ -112,7 +112,6 @@ class Comment extends React.Component {
                 >
                   Report user
                 </div>
-                <div className="optionItem">Mute User</div>
               </div>
             </div>
           </div>
