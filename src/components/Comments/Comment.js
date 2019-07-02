@@ -8,8 +8,6 @@ import CommentBox from '../CommentBox';
 class Comment extends React.Component {
   constructor(props) {
     super(props);
-    // console.log(props);
-
     this.state = {
       points: props.comment.points,
       showCommentBox: false,
@@ -18,6 +16,22 @@ class Comment extends React.Component {
       showOption: false,
     };
   }
+  componentDidMount() {
+    document.addEventListener('click', this.handleClickOutsideOption);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClickOutsideOption);
+  }
+  setWrapperRef = (node) => {
+    this.wrapperRef = node;
+  }
+  handleClickOutsideOption = (event) => {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.setState({ showOption: false });
+    }
+  }
+
   handleUpdateReply = (data) => {
     const { replies } = this.state;
     const tempReplies = [data, ...replies];
@@ -46,7 +60,11 @@ class Comment extends React.Component {
     } = this.props.comment;
     const { replyBox } = this.props;
     const {
-      points, showCommentBox, replies, showReply, showOption,
+      points,
+      showCommentBox,
+      replies,
+      showReply,
+      showOption,
     } = this.state;
     const { strippedComment, links } = this.extractLinksAndComments(comment);
     return (
@@ -61,14 +79,18 @@ class Comment extends React.Component {
               {author}
             </Link>
             <div className="commentHeaderItem">{points} pts</div>
-            <div className="commentHeaderItem">
+            <div className="commentHeaderItem" ref={this.setWrapperRef}>
               <FontAwesomeIcon
                 icon="ellipsis-h"
                 className="ml_05 ellipsisIcon"
                 focusable
                 onClick={() => this.setState({ showOption: !showOption })}
               />
-              <div className={showOption ? 'floatingOption activeOption' : 'floatingOption'} >
+              <div
+                className={
+                  showOption ? 'floatingOption activeOption' : 'floatingOption'
+                }
+              >
                 <div className="optionItem">Report user</div>
                 <div className="optionItem">Mute User</div>
               </div>
@@ -96,7 +118,6 @@ class Comment extends React.Component {
             <FontAwesomeIcon
               icon="reply"
               onClick={() => this.setState({ showCommentBox: !showCommentBox })}
-              className="ml_05"
               focusable
               className="mi_05 replyIcon replyIconActive"
             />
