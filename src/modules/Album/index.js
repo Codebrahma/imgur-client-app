@@ -14,46 +14,46 @@ class Album extends React.Component {
     super(props);
     this.state = {
       albumData: this.props.location.state,
-      // postedComment: null, // UnusedVariable.
       commentData: null,
     };
   }
 
   componentDidMount() {
+    const promiseArray = [];
+    promiseArray.push(this.fetchCommentData());
+
     if (!this.props.location.state) {
-      this.fetchAlbumData();
+      promiseArray.push(this.fetchAlbumData());
     }
-    this.fetchCommentData();
+    Promise.all(promiseArray)
+      .then((responses) => {
+        this.setState(prevState => ({
+          commentData: responses[0].data.data,
+          albumData: (responses[1] && responses[1].data.data) || prevState.albumData,
+        }));
+      });
   }
 
   fetchAlbumData = () => {
     const { galleryHash } = this.props.match.params;
-    axios({
+    return axios({
       method: 'get',
       url: `https://api.imgur.com/3/gallery/album/${galleryHash}`,
       headers: {
         Authorization: `Client-ID ${process.env.CLIENT_ID}`,
       },
-    }).then((res) => {
-      this.setState({
-        albumData: res.data.data,
-      });
-    }).catch(err => console.log(err));
+    });
   }
 
   fetchCommentData = () => {
     const { galleryHash } = this.props.match.params;
-    axios({
+    return axios({
       method: 'get',
       url: `https://api.imgur.com/3/gallery/${galleryHash}/comments/new`,
       headers: {
         Authorization: `Client-ID ${process.env.CLIENT_ID}`,
       },
-    }).then((res) => {
-      this.setState({
-        commentData: res.data.data,
-      });
-    }).catch(err => console.log(err));
+    });
   }
 
   handlePostedComment = (comment, id) => {
