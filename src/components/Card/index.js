@@ -5,7 +5,6 @@ import LazyLoad from 'react-lazy-load';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import { AuthContext } from '../../context/AuthContext';
-import { history } from '../../routerPropTypes';
 import './card.scss';
 
 class Card extends React.Component {
@@ -14,9 +13,17 @@ class Card extends React.Component {
     super();
     this.state = {};
   }
-  // handleCardClick = (data) => {
-  //   this.props.history.push(`/gallery/${data.id}`, { ...data });
-  // };
+
+  handleUpvote = (e) => {
+    e.preventDefault();
+    alert('Handle Upvote');
+  }
+
+  handleDownvote = (e) => {
+    e.preventDefault();
+    alert('Handle Downvote');
+  }
+
   render() {
     const { data } = this.props;
     const { access_token } = this.context;
@@ -52,12 +59,12 @@ class Card extends React.Component {
           <div className="detailsWrapper">
             <div className="title">{data && data.title}</div>
             <div className="countWrapper">
-              <div className="StatContainer">
+              <div className="StatContainer" onClick={this.handleUpvote} role="button">
                 {/* <div className="IconContainer" onClick={()=>alert('clicked')}>{upVote}</div> */}
                 <FontAwesomeIcon icon="arrow-alt-circle-up" />
                 <span>{data && data.ups}</span>
               </div>
-              <div className="StatContainer">
+              <div className="StatContainer" onClick={this.handleDownvote} role="button">
                 <FontAwesomeIcon icon="arrow-alt-circle-down" />
                 <span>{data && data.downs}</span>
               </div>
@@ -78,7 +85,6 @@ class Card extends React.Component {
 }
 
 Card.propTypes = {
-  history: history.isRequired,
   data: PropTypes.shape({
     id: PropTypes.string.isRequired,
     ups: PropTypes.number.isRequired,
