@@ -10,7 +10,7 @@ class BottomBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      itemFavouriteState: '',
+      itemFavouriteState: false,
     };
   }
   handleFavourite = (e) => {
@@ -41,7 +41,7 @@ class BottomBar extends React.Component {
         <FontAwesomeIcon
           onClick={this.handleFavourite}
           icon="heart"
-          className={itemFavouriteState ? 'favourite' : undefined}
+          className={itemFavouriteState ? 'favourite' : ''}
         />
       </div>
     );

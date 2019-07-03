@@ -4,21 +4,26 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ToastContainer, toast } from 'react-toastify';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import './comment.scss';
 import CommentBox from '../CommentBox';
 import ReportUser from '../Modal/ReportUser';
+import { AuthContext } from '../../context/AuthContext';
 
 class Comment extends React.Component {
+  static contextType = AuthContext;
   constructor(props) {
     super(props);
     this.state = {
       points: props.comment.points,
+      tempPointForApi: props.comment.points,
       showCommentBox: false,
       replies: props.comment.children,
       showReply: false,
       showOption: false,
       showReportModal: false,
+      voted: false,
     };
   }
   componentDidMount() {
@@ -63,7 +68,39 @@ class Comment extends React.Component {
     if (success) { this.notify(); }
     this.setState({ showReportModal: false });
   };
-
+  handleVote = (voteType) => {
+    const { voted, points, tempPointForApi } = this.state;
+    const { id } = this.props.comment;
+    const { access_token } = this.context;
+    let voteTypeForApi;
+    let tempPoint;
+    if (voted) voteTypeForApi = 'veto';
+    else voteTypeForApi = voteType;
+    axios({
+      url: `https://api.imgur.com/3/comment/${id}/vote/${voteTypeForApi}`,
+      method: 'post',
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    }).then((res) => {
+      const { success, status } = res.data;
+      if (success && status === 200) {
+        if (voteTypeForApi === 'up' && (points === tempPointForApi)) {
+          tempPoint = points + 1;
+        } else if (voteTypeForApi === 'down' && (points === tempPointForApi)) {
+          tempPoint = points - 1;
+        } else if (voteTypeForApi === 'up' && (points < tempPointForApi)) {
+          tempPoint = tempPointForApi + 1;
+        } else if (voteTypeForApi === 'down' && (points > tempPointForApi)) {
+          tempPoint = tempPointForApi - 1;
+        } else if (voteTypeForApi === 'veto') {
+          tempPoint = tempPointForApi;
+          return this.setState({ voted: false });
+        }
+        this.setState({ voted: true,points:tempPoint });
+      }
+    });
+  }
   render() {
     const {
       author, comment, image_id, id,
@@ -79,12 +116,28 @@ class Comment extends React.Component {
     } = this.state;
     const { strippedComment, links } = this.extractLinksAndComments(comment);
     return (
-      <div className={replyBox && 'indentCommentBox'}>
+      <div className={replyBox ? 'indentCommentBox' : ''}>
         {showReportModal && (
           <ReportUser handleCloseReportModal={this.handleCloseReportModal} commentId={id} />
         )}
         <ToastContainer />
         <div className="commentWrapper">
+          <div className="VoteIconWrapper">
+            <div className="voteIcon">
+              <FontAwesomeIcon
+                icon="arrow-alt-circle-up"
+                className="ml_05 iconVote"
+                focusable
+                onClick={() => this.handleVote('up')}
+              />
+              <FontAwesomeIcon
+                icon="arrow-alt-circle-down"
+                className="ml_05"
+                focusable
+                onClick={() => this.handleVote('down')}
+              />
+            </div>
+          </div>
           <div className="detailsCommentWrapper">
             <Link
               className="commentHeaderItem"

@@ -5,6 +5,27 @@
 .replyIcon{
     display: none;
 }
+.VoteIconWrapper {
+    position: absolute;
+    display: none;
+    right: calc(100%);
+    color: white;
+}
+.voteIcon{
+    background-color: #2c2f34;
+    margin-right: 5px;
+    padding: 5px;
+    border-radius: 2px;
+    .iconVote {
+        margin-bottom: 5px;
+    }
+}
+.activeDown{
+    color: red;
+}
+.activeUp {
+    color: #00d9bc;
+}
 .commentWrapper {
   display: flex;
   flex-direction: column;
@@ -14,12 +35,20 @@
   color:white;
   margin-top: 10px;
   padding: 20px;
-  :hover{
+  position: relative;
+  &:hover{
       .replyIconActive {
+          display: block;
+      }
+      .VoteIconWrapper {
           display: block;
       }
   }
 }
+
+// .displayUpVoteIcon{
+//     display: none;
+// }
 .detailsCommentWrapper {
     display: flex;
     flex-direction: row;
