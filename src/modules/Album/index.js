@@ -59,7 +59,7 @@ class Album extends React.Component {
             content={this.props.location.state}
           />
         )}
-        <BottomBar />
+        <BottomBar albumId={id} />
         <CommentBox
           albumId={id}
           handleCommentUpdate={this.handlePostedComment}
