@@ -23,7 +23,7 @@ class Comment extends React.Component {
       showReply: false,
       showOption: false,
       showReportModal: false,
-      voted: false,
+      voted: '',
     };
   }
   componentDidMount() {
@@ -65,7 +65,9 @@ class Comment extends React.Component {
   };
   notify = () => toast('Reported Successfully !');
   handleCloseReportModal = (success) => {
-    if (success) { this.notify(); }
+    if (success) {
+      this.notify();
+    }
     this.setState({ showReportModal: false });
   };
   handleVote = (voteType) => {
@@ -74,33 +76,39 @@ class Comment extends React.Component {
     const { access_token } = this.context;
     let voteTypeForApi;
     let tempPoint;
-    if (voted) voteTypeForApi = 'veto';
+    if (voted === voteType) voteTypeForApi = 'veto';
     else voteTypeForApi = voteType;
+    if (voteTypeForApi === 'up' && points === tempPointForApi) {
+      tempPoint = points + 1;
+      this.setState({ voted: 'up', points: tempPoint });
+    } else if (voteTypeForApi === 'down' && points === tempPointForApi) {
+      tempPoint = points - 1;
+      this.setState({ voted: 'down', points: tempPoint });
+    } else if (voteTypeForApi === 'up' && points < tempPointForApi) {
+      tempPoint = tempPointForApi + 1;
+      this.setState({ voted: 'up', points: tempPoint });
+    } else if (voteTypeForApi === 'down' && points > tempPointForApi) {
+      tempPoint = tempPointForApi - 1;
+      this.setState({ voted: 'down', points: tempPoint });
+    } else if (voteTypeForApi === 'veto') {
+      tempPoint = tempPointForApi;
+      this.setState({ voted: '', points: tempPoint });
+    }
     axios({
       url: `https://api.imgur.com/3/comment/${id}/vote/${voteTypeForApi}`,
       method: 'post',
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
-    }).then((res) => {
-      const { success, status } = res.data;
-      if (success && status === 200) {
-        if (voteTypeForApi === 'up' && (points === tempPointForApi)) {
-          tempPoint = points + 1;
-        } else if (voteTypeForApi === 'down' && (points === tempPointForApi)) {
-          tempPoint = points - 1;
-        } else if (voteTypeForApi === 'up' && (points < tempPointForApi)) {
-          tempPoint = tempPointForApi + 1;
-        } else if (voteTypeForApi === 'down' && (points > tempPointForApi)) {
-          tempPoint = tempPointForApi - 1;
-        } else if (voteTypeForApi === 'veto') {
-          tempPoint = tempPointForApi;
-          return this.setState({ voted: false });
+    })
+      .then((res) => {
+        const { success } = res.data;
+        if (!success) {
+          this.setState({ points: tempPointForApi, voted: '' });
         }
-        this.setState({ voted: true,points:tempPoint });
-      }
-    });
-  }
+      })
+      .catch(() => this.setState({ points: tempPointForApi, voted: '' }));
+  };
   render() {
     const {
       author, comment, image_id, id,
@@ -118,7 +126,10 @@ class Comment extends React.Component {
     return (
       <div className={replyBox ? 'indentCommentBox' : ''}>
         {showReportModal && (
-          <ReportUser handleCloseReportModal={this.handleCloseReportModal} commentId={id} />
+          <ReportUser
+            handleCloseReportModal={this.handleCloseReportModal}
+            commentId={id}
+          />
         )}
         <ToastContainer />
         <div className="commentWrapper">
