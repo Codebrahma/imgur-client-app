@@ -34,7 +34,7 @@ class CommentBox extends React.Component {
       .then((res) => {
         if (res.status === 200) {
           handleCommentUpdate(currentText, res.data.data.id);
-          this.setState({currentText:''})
+          this.setState({ currentText: '' });
         } else {
           alert('unable to post comment...');
         }
@@ -42,10 +42,10 @@ class CommentBox extends React.Component {
       .catch(err => console.log(err));
   };
   handleCreateReply = () => {
-    console.log('reply creation is callled...')
-    const { imageId, commentId,handleUpdateReply } = this.props;
+    // console.log('reply creation is callled...');
+    const { imageId, commentId, handleUpdateReply } = this.props;
     const { currentText } = this.state;
-    const { access_token,account_username } = this.context;
+    const { access_token, account_username } = this.context;
     // api for reply creation
     axios({
       url: `https://api.imgur.com/3/comment/${commentId}`,
@@ -58,17 +58,17 @@ class CommentBox extends React.Component {
         image_id: imageId,
       },
     })
-      .then(res => {
+      .then((res) => {
         const { id } = res.data.data;
-          const tempObj = {
-            id,
-            comment: currentText,
-            author: account_username,
-            points: 1,
-            image_id: imageId,
-          }
-          handleUpdateReply(tempObj);
-          this.setState({currentText:''});
+        const tempObj = {
+          id,
+          comment: currentText,
+          author: account_username,
+          points: 1,
+          image_id: imageId,
+        };
+        handleUpdateReply(tempObj);
+        this.setState({ currentText: '' });
       })
       .catch(err => console.log(err));
   };
@@ -76,7 +76,7 @@ class CommentBox extends React.Component {
     const { currentText } = this.state;
     const { access_token } = this.context;
     const { reply } = this.props;
-    console.log(this.props)
+    // console.log(this.props)
     return (
       <div className="commnetBoxWrapper">
         <textarea
