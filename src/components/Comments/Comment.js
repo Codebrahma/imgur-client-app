@@ -74,21 +74,15 @@ class Comment extends React.Component {
     this.setState({ showReportModal: false });
   };
   handleVote = (voteType) => {
-    const { voted, points, tempPointForApi } = this.state;
+    const { voted, tempPointForApi } = this.state;
     const { id } = this.props.commentProp;
     const { access_token: accessToken } = this.context;
     if (!accessToken) return;
-    let voteTypeForApi;
-    let tempPoint;
-    if (voted === voteType) voteTypeForApi = 'veto';
-    else voteTypeForApi = voteType;
-    if (voteTypeForApi === 'up') {
-      if (points === tempPointForApi) tempPoint = points + 1;
-      else tempPoint = tempPointForApi + 1;
-    } else if (voteTypeForApi === 'down') {
-      if (points === tempPointForApi) tempPoint = points - 1;
-      else tempPoint = tempPointForApi - 1;
-    } else tempPoint = tempPointForApi;
+    let diff = 0;
+    const voteTypeForApi = voted === voteType ? 'veto' : voteType;
+    diff = diff === 0 && voteTypeForApi === 'up' ? 1 : diff;
+    diff = diff === 0 && voteTypeForApi === 'down' ? -1 : diff;
+    const tempPoint = tempPointForApi + diff;
     this.setState({ voted: voteTypeForApi, points: tempPoint });
     axios({
       url: `https://api.imgur.com/3/comment/${id}/vote/${voteTypeForApi}`,
