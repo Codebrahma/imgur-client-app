@@ -141,13 +141,13 @@ class Comment extends React.Component {
             <div className="voteIcon">
               <FontAwesomeIcon
                 icon="arrow-alt-circle-up"
-                className={voted === 'up' ? 'ml_05 iconVote activeUp' : 'ml_05 iconVote'}
+                className={`ml_05 iconVote${(voted === 'up' && ' activeUp') || ''}`}
                 focusable
                 onClick={() => this.handleVote('up')}
               />
               <FontAwesomeIcon
                 icon="arrow-alt-circle-down"
-                className={voted === 'down' ? 'ml_05 iconVote activeDown' : 'ml_05 iconVote'}
+                className={`ml_05 iconVote${(voted === 'down' && ' activeDown') || ''}`}
                 focusable
                 onClick={() => this.handleVote('down')}
               />
