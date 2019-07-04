@@ -137,7 +137,7 @@ class Comment extends React.Component {
         )}
         <ToastContainer />
         <div className="commentWrapper">
-          <div className="VoteIconWrapper">
+          <div className="voteIconWrapper">
             <div className="voteIcon">
               <FontAwesomeIcon
                 icon="arrow-alt-circle-up"

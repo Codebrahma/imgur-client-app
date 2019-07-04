@@ -5,7 +5,7 @@
 .replyIcon{
     display: none;
 }
-.VoteIconWrapper {
+.voteIconWrapper {
     position: absolute;
     display: none;
     right: calc(100%);
@@ -40,15 +40,11 @@
       .replyIconActive {
           display: block;
       }
-      .VoteIconWrapper {
+      .voteIconWrapper {
           display: block;
       }
   }
 }
-
-// .displayUpVoteIcon{
-//     display: none;
-// }
 .detailsCommentWrapper {
     display: flex;
     flex-direction: row;
