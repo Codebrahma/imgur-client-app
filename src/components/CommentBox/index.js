@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './commentBox.scss';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -16,6 +18,8 @@ class CommentBox extends React.Component {
     e.preventDefault();
     this.setState({ currentText: e.target.value });
   };
+  notify = () => toast('Unable to Post Comment!');
+  notify1 = () => toast('Your comment has been successfully submitted!!');
   handleApi = (requestType) => {
     const { access_token, account_username } = this.context;
     const { currentText } = this.state;
@@ -59,11 +63,12 @@ class CommentBox extends React.Component {
             };
             handleUpdateReply(tempObj);
           }
+          this.notify1();
         } else {
-          alert('unable to post comment...');
+          this.notify();
         }
       })
-      .catch(err => console.log(err));
+      .catch(() => this.notify());
   }
   render() {
     const { currentText } = this.state;
@@ -71,6 +76,7 @@ class CommentBox extends React.Component {
     const { reply } = this.props;
     return (
       <div className="commnetBoxWrapper">
+        <ToastContainer />
         <textarea
           className="textArea"
           value={currentText}
