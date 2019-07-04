@@ -1,30 +1,30 @@
-.indentCommentBox{
-    position: relative;
-    margin-left: 40px;
+.indentCommentBox {
+  position: relative;
+  margin-left: 40px;
 }
-.replyIcon{
-    display: none;
+.replyIcon {
+  display: none;
 }
 .voteIconWrapper {
-    position: absolute;
-    display: none;
-    right: calc(100%);
-    color: white;
+  position: absolute;
+  display: none;
+  right: calc(100%);
+  color: white;
 }
-.voteIcon{
-    background-color: #2c2f34;
-    margin-right: 5px;
-    padding: 5px;
-    border-radius: 2px;
-    .iconVote {
-        margin-bottom: 5px;
-    }
+.voteIcon {
+  background-color: #2c2f34;
+  margin-right: 5px;
+  padding: 5px;
+  border-radius: 2px;
+  .iconVote {
+    margin-bottom: 5px;
+  }
 }
-.activeDown{
-    color: red;
+.activeDown {
+  color: red;
 }
 .activeUp {
-    color: #00d9bc;
+  color: #00d9bc;
 }
 .commentWrapper {
   display: flex;
@@ -32,68 +32,68 @@
   justify-content: space-around;
   border-radius: 6px 6px 6px 6px;
   background-color: #2c2f34;
-  color:white;
+  color: white;
   margin-top: 10px;
   padding: 20px;
   position: relative;
-  &:hover{
-      .replyIconActive {
-          display: block;
-      }
-      .voteIconWrapper {
-          display: block;
-      }
+  &:hover {
+    .replyIconActive {
+      display: block;
+    }
+    .voteIconWrapper {
+      display: block;
+    }
   }
 }
 .detailsCommentWrapper {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 .commentHeaderItem {
-    font-size: 10px;
-    font-weight: 700;
-    margin-right: 20px;
-    color: white;
+  font-size: 10px;
+  font-weight: 700;
+  margin-right: 20px;
+  color: white;
 }
 .commentText {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    font-size: 15px;
-    padding-top: 20px;
-    padding-bottom: 10px;
-    overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 15px;
+  padding-top: 20px;
+  padding-bottom: 10px;
+  overflow: hidden;
 }
 .commentImage {
-    max-width: 10%;
+  max-width: 10%;
 }
-.expandReply{
-    font-size: 10px;
-    cursor: pointer;
+.expandReply {
+  font-size: 10px;
+  cursor: pointer;
 }
-.expandReplyIcon{
-    margin-left: 1rem;
-    margin-right: 0.5rem;
+.expandReplyIcon {
+  margin-left: 1rem;
+  margin-right: 0.5rem;
 }
-.ellipsisIcon{
-    position: relative;
+.ellipsisIcon {
+  position: relative;
 }
 .floatingOption {
-    position: absolute;
-    display: none;
+  position: absolute;
+  display: none;
 }
-.activeOption{
-    display: flex;
-    flex-direction: column;
-    background-color: #F2F2F2;
-    color: black;
-    justify-content: space-around;
-    font-size: 15px;
-    padding: 0 10px;
-    border-radius: 2px;
-    font-weight: 100;
+.activeOption {
+  display: flex;
+  flex-direction: column;
+  background-color: #f2f2f2;
+  color: black;
+  justify-content: space-around;
+  font-size: 15px;
+  padding: 0 10px;
+  border-radius: 2px;
+  font-weight: 100;
 }
 .optionItem {
-    margin: 0.5rem 0;
-    cursor: pointer;
+  margin: 0.5rem 0;
+  cursor: pointer;
 }

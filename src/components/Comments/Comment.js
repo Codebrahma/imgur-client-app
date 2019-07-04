@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import LazyLoad from 'react-lazy-load';
 import { Link } from 'react-router-dom';
@@ -74,33 +76,25 @@ class Comment extends React.Component {
   handleVote = (voteType) => {
     const { voted, points, tempPointForApi } = this.state;
     const { id } = this.props.commentProp;
-    const { access_token } = this.context;
-    if (!access_token) return;
+    const { access_token: accessToken } = this.context;
+    if (!accessToken) return;
     let voteTypeForApi;
     let tempPoint;
     if (voted === voteType) voteTypeForApi = 'veto';
     else voteTypeForApi = voteType;
-    if (voteTypeForApi === 'up' && points === tempPointForApi) {
-      tempPoint = points + 1;
-      this.setState({ voted: 'up', points: tempPoint });
-    } else if (voteTypeForApi === 'down' && points === tempPointForApi) {
-      tempPoint = points - 1;
-      this.setState({ voted: 'down', points: tempPoint });
-    } else if (voteTypeForApi === 'up' && points < tempPointForApi) {
-      tempPoint = tempPointForApi + 1;
-      this.setState({ voted: 'up', points: tempPoint });
-    } else if (voteTypeForApi === 'down' && points > tempPointForApi) {
-      tempPoint = tempPointForApi - 1;
-      this.setState({ voted: 'down', points: tempPoint });
-    } else if (voteTypeForApi === 'veto') {
-      tempPoint = tempPointForApi;
-      this.setState({ voted: '', points: tempPoint });
-    }
+    if (voteTypeForApi === 'up') {
+      if (points === tempPointForApi) tempPoint = points + 1;
+      else tempPoint = tempPointForApi + 1;
+    } else if (voteTypeForApi === 'down') {
+      if (points === tempPointForApi) tempPoint = points - 1;
+      else tempPoint = tempPointForApi - 1;
+    } else tempPoint = tempPointForApi;
+    this.setState({ voted: voteTypeForApi, points: tempPoint });
     axios({
       url: `https://api.imgur.com/3/comment/${id}/vote/${voteTypeForApi}`,
       method: 'post',
       headers: {
-        Authorization: `Bearer ${access_token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     })
       .then((res) => {
@@ -114,7 +108,7 @@ class Comment extends React.Component {
   render() {
     const { commentProp } = this.props;
     const {
-      author, comment, image_id, id,
+      author, comment, image_id: imageId, id,
     } = commentProp;
     const { replyBox } = this.props;
     const {
@@ -141,13 +135,16 @@ class Comment extends React.Component {
             <div className="voteIcon">
               <FontAwesomeIcon
                 icon="arrow-alt-circle-up"
-                className={`ml_05 iconVote${(voted === 'up' && ' activeUp') || ''}`}
+                className={`ml_05 iconVote${(voted === 'up' && ' activeUp') ||
+                  ''}`}
                 focusable
                 onClick={() => this.handleVote('up')}
               />
               <FontAwesomeIcon
                 icon="arrow-alt-circle-down"
-                className={`ml_05 iconVote${(voted === 'down' && ' activeDown') || ''}`}
+                className={`ml_05 iconVote${(voted === 'down' &&
+                  ' activeDown') ||
+                  ''}`}
                 focusable
                 onClick={() => this.handleVote('down')}
               />
@@ -211,7 +208,7 @@ class Comment extends React.Component {
           {showCommentBox && (
             <CommentBox
               reply
-              imageId={image_id}
+              imageId={imageId}
               commentId={id}
               handleUpdateReply={this.handleUpdateReply}
             />
@@ -252,14 +249,8 @@ Comment.propTypes = {
   commentProp: PropTypes.shape({
     author: PropTypes.string,
     comment: PropTypes.string,
-    image_id: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
-    id: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]),
+    image_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,
   replyBox: PropTypes.bool,
 };
