@@ -16,6 +16,7 @@ class BottomBar extends React.Component {
   handleFavourite = (e) => {
     e.preventDefault();
     const { access_token } = this.context;
+    if(!access_token) return;
     const { albumId } = this.props;
     axios({
       url: `https://api.imgur.com/3/album/${albumId}/favorite`,
