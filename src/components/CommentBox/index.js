@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import './commentBox.scss';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -94,5 +95,10 @@ class CommentBox extends React.Component {
     );
   }
 }
-
+CommentBox.propTypes = {
+  reply: PropTypes.bool,
+};
+CommentBox.defaultProps = {
+  reply: false,
+};
 export default CommentBox;

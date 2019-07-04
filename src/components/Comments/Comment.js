@@ -15,11 +15,12 @@ class Comment extends React.Component {
   static contextType = AuthContext;
   constructor(props) {
     super(props);
+    const { points, children } = props.commentProp;
     this.state = {
-      points: props.comment.points,
-      tempPointForApi: props.comment.points,
+      points,
+      tempPointForApi: points,
       showCommentBox: false,
-      replies: props.comment.children,
+      replies: children,
       showReply: false,
       showOption: false,
       showReportModal: false,
@@ -72,8 +73,9 @@ class Comment extends React.Component {
   };
   handleVote = (voteType) => {
     const { voted, points, tempPointForApi } = this.state;
-    const { id } = this.props.comment;
+    const { id } = this.props.commentProp;
     const { access_token } = this.context;
+    if (!access_token) return;
     let voteTypeForApi;
     let tempPoint;
     if (voted === voteType) voteTypeForApi = 'veto';
@@ -110,9 +112,10 @@ class Comment extends React.Component {
       .catch(() => this.setState({ points: tempPointForApi, voted: '' }));
   };
   render() {
+    const { commentProp } = this.props;
     const {
       author, comment, image_id, id,
-    } = this.props.comment;
+    } = commentProp;
     const { replyBox } = this.props;
     const {
       points,
@@ -121,6 +124,7 @@ class Comment extends React.Component {
       showReply,
       showOption,
       showReportModal,
+      voted,
     } = this.state;
     const { strippedComment, links } = this.extractLinksAndComments(comment);
     return (
@@ -137,13 +141,13 @@ class Comment extends React.Component {
             <div className="voteIcon">
               <FontAwesomeIcon
                 icon="arrow-alt-circle-up"
-                className="ml_05 iconVote"
+                className={voted === 'up' ? 'ml_05 iconVote activeUp' : 'ml_05 iconVote'}
                 focusable
                 onClick={() => this.handleVote('up')}
               />
               <FontAwesomeIcon
                 icon="arrow-alt-circle-down"
-                className="ml_05"
+                className={voted === 'down' ? 'ml_05 iconVote activeDown' : 'ml_05 iconVote'}
                 focusable
                 onClick={() => this.handleVote('down')}
               />
@@ -237,7 +241,7 @@ class Comment extends React.Component {
         <div>
           {showReply &&
             replies.map(reply => (
-              <Comment replyBox comment={reply} key={reply.id} />
+              <Comment replyBox commentProp={reply} key={reply.id} />
             ))}
         </div>
       </div>
@@ -245,8 +249,18 @@ class Comment extends React.Component {
   }
 }
 Comment.propTypes = {
-  author: PropTypes.string.isRequired,
-  comment: PropTypes.string.isRequired,
+  commentProp: PropTypes.shape({
+    author: PropTypes.string,
+    comment: PropTypes.string,
+    image_id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+  }).isRequired,
   replyBox: PropTypes.bool,
 };
 Comment.defaultProps = {

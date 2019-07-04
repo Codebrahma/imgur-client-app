@@ -125,7 +125,10 @@ class ReportUser extends React.Component {
   }
 }
 ReportUser.propTypes = {
-  commentId: PropTypes.string.isRequired,
+  commentId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
   handleCloseReportModal: PropTypes.func.isRequired,
 };
 export default ReportUser;
