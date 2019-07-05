@@ -136,9 +136,7 @@ class Comment extends React.Component {
               />
               <FontAwesomeIcon
                 icon="arrow-alt-circle-down"
-                className={`ml_05 iconVote${(voted === 'down' &&
-                  ' activeDown') ||
-                  ''}`}
+                className={`ml_05 ${(voted === 'down' && ' activeDown') || ''}`}
                 focusable
                 onClick={() => this.handleVote('down')}
               />
