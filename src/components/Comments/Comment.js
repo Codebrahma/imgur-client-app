@@ -20,7 +20,6 @@ class Comment extends React.Component {
     const { points, children } = props.commentProp;
     this.state = {
       points,
-      tempPointForApi: points,
       showCommentBox: false,
       replies: children,
       showReply: false,
@@ -66,7 +65,11 @@ class Comment extends React.Component {
     );
     return { strippedComment, links };
   };
+  // Toast messages
   notify = () => toast('Reported Successfully !');
+  notifyBadRequest = () => toast('Something went wrong!');
+  notifyUserNotLoggedIn = () => toast('Please login first !');
+
   handleCloseReportModal = (success) => {
     if (success) {
       this.notify();
@@ -74,15 +77,19 @@ class Comment extends React.Component {
     this.setState({ showReportModal: false });
   };
   handleVote = (voteType) => {
-    const { voted, tempPointForApi } = this.state;
+    const { voted, points } = this.state;
+    const { points: tempPointForApi } = this.props.commentProp;
     const { id } = this.props.commentProp;
     const { access_token: accessToken } = this.context;
-    if (!accessToken) return;
-    let diff = 0;
+    if (!accessToken) {
+      this.notifyUserNotLoggedIn();
+      return;
+    }
+    let extraPoint = 0;
     const voteTypeForApi = voted === voteType ? 'veto' : voteType;
-    diff = diff === 0 && voteTypeForApi === 'up' ? 1 : diff;
-    diff = diff === 0 && voteTypeForApi === 'down' ? -1 : diff;
-    const tempPoint = tempPointForApi + diff;
+    extraPoint = extraPoint === 0 && voteTypeForApi === 'up' ? 1 : extraPoint;
+    extraPoint = extraPoint === 0 && voteTypeForApi === 'down' ? -1 : extraPoint;
+    const tempPoint = tempPointForApi + extraPoint;
     this.setState({ voted: voteTypeForApi, points: tempPoint });
     axios({
       url: `https://api.imgur.com/3/comment/${id}/vote/${voteTypeForApi}`,
@@ -94,10 +101,14 @@ class Comment extends React.Component {
       .then((res) => {
         const { success } = res.data;
         if (!success) {
-          this.setState({ points: tempPointForApi, voted: '' });
+          this.notifyBadRequest();
+          this.setState({ points, voted });
         }
       })
-      .catch(() => this.setState({ points: tempPointForApi, voted: '' }));
+      .catch(() => {
+        this.notifyBadRequest();
+        this.setState({ points, voted });
+      });
   };
   render() {
     const { commentProp } = this.props;
@@ -243,6 +254,7 @@ Comment.propTypes = {
     comment: PropTypes.string,
     image_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    points: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,
   replyBox: PropTypes.bool,
 };
