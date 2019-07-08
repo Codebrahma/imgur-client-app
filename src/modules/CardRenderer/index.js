@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React from 'react';
 import Loader from 'react-loader-spinner';
 import axios from 'axios';
@@ -12,85 +11,37 @@ class CardRenderer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      cardData: [],
       currentPage: 0,
-      loading: true,
+      loading: false,
+      loadMoreData: true,
     };
   }
   componentWillMount() {
     this.tempDebounceFuncVariable = debounce(300, this.handleOnScroll);
     window.addEventListener('scroll', this.tempDebounceFuncVariable);
   }
+
   componentDidMount() {
     const { currentPage } = this.state;
     this.loadData(currentPage);
   }
+
   componentWillUnmount() {
     window.removeEventListener(
       'scroll',
       this.tempDebounceFuncVariable.cancel(),
     );
   }
-  loadData = (currentPage) => {
-    const { data } = this.state;
-    const { type, userName } = this.props;
-    const tempCurrentPage = currentPage + 1;
-    this.setState({ loading: true });
-    // type === 'Home' ----> Home Component.
-    // type === 'favorites ----> Favorites Component.
-    const url =
-      type === 'Home'
-        ? `https://api.imgur.com/3/gallery/hot/viral/all/${currentPage}`
-        : `https://api.imgur.com/3/account/${userName}/gallery_favorites/${currentPage}/new`;
 
-    axios({
-      method: 'get',
-      url,
-      params: {
-        showViral: true,
-        mature: true,
-        album_previews: true,
-      },
-      headers: {
-        Authorization: `Client-ID ${process.env.CLIENT_ID}`,
-      },
-    })
-      .then((res) => {
-        const { data: resData } = res.data;
-        const dataObject = [...data];
-        resData.forEach((dataItem) => {
-          const {
-            id,
-            images,
-            title,
-            ups,
-            downs,
-            views,
-            comment_count,
-            link,
-          } = dataItem;
-          const tempObject = {
-            id,
-            images,
-            title,
-            ups,
-            downs,
-            views,
-            commentCount: comment_count,
-            link,
-          };
-          dataObject.push(tempObject);
-        });
-        this.setState({
-          data: dataObject,
-          currentPage: tempCurrentPage,
-          loading: false,
-        });
-      })
-      .catch(err => console.log(err));
-  };
   handleOnScroll = () => {
-    const { currentPage, loading } = this.state;
+    const { currentPage, loading, loadMoreData } = this.state;
+
+    // Bail early if:
+    // loading: it's already loading
+    // !loadMoreData: there's nothing left to load
+    if (!loadMoreData || loading) return;
+
     const scrollTop =
       (document.documentElement && document.documentElement.scrollTop) ||
       document.body.scrollTop;
@@ -101,16 +52,51 @@ class CardRenderer extends React.Component {
       document.documentElement.clientHeight || window.innerHeight;
     const scrolledToBottom =
       Math.ceil(scrollTop + clientHeight) >= scrollHeight;
-    if (scrolledToBottom && !loading) {
+    if (scrolledToBottom) {
       this.loadData(currentPage);
     }
   };
+
+  loadData = (currentPage) => {
+    this.setState({ loading: true }, () => {
+      const url = this.props.generateUrl(currentPage);
+
+      axios({
+        method: 'get',
+        url,
+        params: this.props.params,
+        headers: {
+          Authorization: `Client-ID ${process.env.CLIENT_ID}`,
+        },
+      })
+        .then((res) => {
+          this.setState(prevState => ({
+            cardData: [...prevState.cardData, ...res.data.data.map(dataItem => ({
+              id: dataItem.id,
+              images: dataItem.images,
+              title: dataItem.title,
+              ups: dataItem.ups,
+              downs: dataItem.downs,
+              views: dataItem.views,
+              commentCount: dataItem.comment_count,
+              link: dataItem.link,
+
+            }))],
+            currentPage: prevState.currentPage + 1,
+            loading: false,
+            loadMoreData: (res.data.data.length > 0), // data was fetched try again to fetch more data.
+          }));
+        })
+        .catch(err => console.log(err));
+    });
+  };
+
   render() {
-    const { data, loading } = this.state;
+    const { cardData, loading } = this.state;
     return (
       <Grid>
         <div className="cardListWrapper">
-          {data.map(dataItem => (
+          {cardData.map(dataItem => (
             <Card key={dataItem.id} className="cardItem" data={dataItem} />
           ))}
         </div>
@@ -126,10 +112,16 @@ class CardRenderer extends React.Component {
   }
 }
 CardRenderer.propTypes = {
-  type: PropTypes.string.isRequired,
-  userName: PropTypes.string,
+  generateUrl: PropTypes.func.isRequired,
+  params: PropTypes.shape({
+    showViral: PropTypes.bool,
+    mature: PropTypes.bool,
+    album_previews: PropTypes.bool,
+  }),
 };
+
 CardRenderer.defaultProps = {
-  userName: null,
+  params: {},
 };
+
 export default CardRenderer;

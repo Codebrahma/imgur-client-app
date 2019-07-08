@@ -13,7 +13,10 @@ class Favorites extends Component {
     return (
       <Grid>
         <h1>Favorites</h1>
-        <CardRenderer type="favorites" userName={username} />
+        <CardRenderer
+        // https://api.imgur.com/3/account/{{username}}/favorites/{{page}}/{{favoritesSort}}
+          generateUrl={currentPage => `https://api.imgur.com/3/account/${username}/gallery_favorites/${currentPage}/new`}
+        />
       </Grid>
     );
   }
