@@ -27,7 +27,6 @@ class Album extends React.Component {
     }
     Promise.all(promiseArray)
       .then((responses) => {
-        console.log(responses);
         this.setState(prevState => ({
           commentData: responses[0].data.data,
           albumData: (responses[1] && responses[1].data.data) || prevState.albumData,
@@ -59,7 +58,6 @@ class Album extends React.Component {
 
   handlePostedComment = (comment, CommentId) => {
     const { commentData, albumData } = this.state;
-    // const {  id } = this.props.location.state;
     const { id } = albumData;
     const { account_username: username } = this.context;
     const newCommentObj = {
