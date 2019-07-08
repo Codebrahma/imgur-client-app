@@ -4,27 +4,28 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AuthContext } from '../../context/AuthContext';
-// import Edit from '../../svgs/Edit';
 import Button from '../../components/Button';
 
 class About extends Component {
   static contextType = AuthContext;
 
-  static getDerivedStateFromProps(newProps, state) {
-    if (state.bio !== newProps.data.bio) {
-      return {
-        bio: newProps.data.bio,
-      };
-    }
-    return null;
-  }
-
   constructor(props) {
     super(props);
     this.state = {
       isEditing: false,
-      bio: null,
+      bio: this.props.data.bio, // Initializes the bio, when user changes tabs. (Data already present in User Component)
     };
+  }
+
+  // Initialize the bio (state), when the props.data.bio changes from undefined to 'something': (Data fetched is User Component)
+  componentDidUpdate(prevProps) {
+    // This, resets the bio(state), when username is changed.
+    if (prevProps.data.bio !== this.props.data.bio) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        bio: this.props.data.bio,
+      });
+    }
   }
 
   startEditing = () => this.setState({ isEditing: true });
@@ -43,10 +44,15 @@ class About extends Component {
         data: {
           bio: this.state.bio,
         },
-      }).then(() => {
+      }).then((res) => {
         // TODO: Show a Success Toast.
-      }).catch(() => {
+        console.log(res);
+        this.setState({
+          bio: this.state.bio,
+        });
+      }).catch((err) => {
         // TODO: Show a Error Toast.
+        console.log(err);
         this.setState({
           bio: this.props.data.bio,
         });
@@ -73,7 +79,6 @@ class About extends Component {
                          <div>
                            <h4 className="userpage__section--about__heading">About</h4>
                            <FontAwesomeIcon icon="edit" onClick={this.startEditing} className="ml_05" focusable />
-                           {/* <Edit handleClick={this.startEditing} conditionalEnable classModifier="horizontalMargin" /> */}
                          </div>
                          { this.state.isEditing &&
                          <div>
