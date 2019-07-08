@@ -69,7 +69,7 @@ const Routes = () => (
             <Route path="/dashboard" component={Dashboard} />
             <Redirect exact from="/user/:username" to="/user/:username/about" />
             <Route path="/user/:username" component={User} />
-            <Route path="/gallery/:id" component={Album} />
+            <Route path="/gallery/:galleryHash" component={Album} />
             {/* Route path="/user/:username" component={User} /> */}
             {/* <PrivateRoute path="/private" component={Private} /> */}
           </Switch>
