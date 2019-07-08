@@ -1,5 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './commentBox.scss';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -15,79 +18,75 @@ class CommentBox extends React.Component {
     e.preventDefault();
     this.setState({ currentText: e.target.value });
   };
-  handleCreateComment = (e) => {
-    e.preventDefault();
-    const { access_token } = this.context;
+  notify = () => toast('Unable to Post Comment!');
+  notify1 = () => toast('Your comment has been successfully submitted!!');
+  handleApi = (requestType) => {
+    const { access_token, account_username } = this.context;
     const { currentText } = this.state;
-    const { albumId, handleCommentUpdate } = this.props;
+    let url;
+    let image_id;
+    if (requestType === 'comment') {
+      const { albumId } = this.props;
+      url = 'https://api.imgur.com/3/comment';
+      image_id = albumId;
+    } else {
+      const { imageId, commentId } = this.props;
+      url = `https://api.imgur.com/3/comment/${commentId}`;
+      image_id = imageId;
+    }
     axios({
       method: 'post',
-      url: 'https://api.imgur.com/3/comment',
+      url,
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
       data: {
         comment: currentText,
-        image_id: albumId,
+        image_id,
       },
     })
       .then((res) => {
         if (res.status === 200) {
-          handleCommentUpdate(currentText, res.data.data.id);
-          this.setState({currentText:''})
+          const { id } = res.data.data;
+          if (requestType === 'comment') {
+            const { handleCommentUpdate } = this.props;
+            this.setState({ currentText: '' }, () => handleCommentUpdate(currentText, id));
+          } else {
+            const { handleUpdateReply, imageId } = this.props;
+            const tempObj = {
+              id,
+              comment: currentText,
+              author: account_username,
+              points: 1,
+              image_id: imageId,
+              children: [],
+            };
+            handleUpdateReply(tempObj);
+          }
+          this.notify1();
         } else {
-          alert('unable to post comment...');
+          this.notify();
         }
       })
-      .catch(err => console.log(err));
-  };
-  handleCreateReply = () => {
-    console.log('reply creation is callled...')
-    const { imageId, commentId,handleUpdateReply } = this.props;
-    const { currentText } = this.state;
-    const { access_token,account_username } = this.context;
-    // api for reply creation
-    axios({
-      url: `https://api.imgur.com/3/comment/${commentId}`,
-      method: 'post',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-      data: {
-        comment: currentText,
-        image_id: imageId,
-      },
-    })
-      .then(res => {
-        const { id } = res.data.data;
-          const tempObj = {
-            id,
-            comment: currentText,
-            author: account_username,
-            points: 1,
-            image_id: imageId,
-          }
-          handleUpdateReply(tempObj);
-          this.setState({currentText:''});
-      })
-      .catch(err => console.log(err));
-  };
+      .catch(() => this.notify());
+  }
   render() {
     const { currentText } = this.state;
     const { access_token } = this.context;
     const { reply } = this.props;
-    console.log(this.props)
     return (
       <div className="commnetBoxWrapper">
+        <ToastContainer />
         <textarea
           className="textArea"
+          value={currentText}
           onChange={this.handleCommentText}
           disabled={!access_token}
         />
         <button
-          className={currentText.length === 0 ? 'button' : 'button active'}
+          className={`button${(currentText.length !== 0 && ' active') || ''}`}
           disabled={currentText.length === 0}
-          onClick={reply ? this.handleCreateReply : this.handleCreateComment}
+          onClick={reply ? () => this.handleApi('reply') : () => this.handleApi('comment')}
         >
           Post
         </button>
@@ -95,5 +94,29 @@ class CommentBox extends React.Component {
     );
   }
 }
-
+CommentBox.propTypes = {
+  reply: PropTypes.bool,
+  albumId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  commentId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  imageId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  handleCommentUpdate: PropTypes.func,
+  handleUpdateReply: PropTypes.func,
+};
+CommentBox.defaultProps = {
+  reply: false,
+  albumId: null,
+  commentId: null,
+  imageId: null,
+  handleUpdateReply: null,
+  handleCommentUpdate: null,
+};
 export default CommentBox;

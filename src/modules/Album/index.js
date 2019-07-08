@@ -24,18 +24,23 @@ class Album extends React.Component {
       headers: {
         Authorization: `Client-ID ${process.env.CLIENT_ID}`,
       },
-    }).then((res) => {
-      this.setState({ commentData: res.data.data });
-    }).catch(err=>console.log(err));
+    })
+      .then((res) => {
+        this.setState({ commentData: res.data.data });
+      })
+      .catch(err => console.log(err));
   }
-  handlePostedComment = (comment, id) => {
+  handlePostedComment = (comment, CommentId) => {
     const { commentData } = this.state;
+    const {  id } = this.props.location.state;
     const { account_username } = this.context;
     const newCommentObj = {
       comment,
       author: account_username,
-      id,
+      id: CommentId,
       points: 1,
+      image_id: id,
+      children: [],
     };
     const tempCommentDataObj = [newCommentObj, ...commentData];
     this.setState({ commentData: tempCommentDataObj });
@@ -54,7 +59,7 @@ class Album extends React.Component {
             content={this.props.location.state}
           />
         )}
-        <BottomBar />
+        <BottomBar albumId={id} />
         <CommentBox
           albumId={id}
           handleCommentUpdate={this.handlePostedComment}

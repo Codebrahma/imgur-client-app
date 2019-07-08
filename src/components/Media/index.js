@@ -1,6 +1,6 @@
 import React from 'react';
 import LazyLoad from 'react-lazy-load';
-
+import PropTypes from 'prop-types';
 import './media.scss';
 
 class Media extends React.Component {
@@ -24,4 +24,7 @@ class Media extends React.Component {
   }
 }
 
+Media.propTypes = {
+  content: PropTypes.instanceOf(Object).isRequired,
+}
 export default Media;
