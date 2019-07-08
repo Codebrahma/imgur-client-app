@@ -91,10 +91,10 @@ class User extends Component {
 
         <section className="userpage__section">
           <Suspense fallback={<div />}>
-            <Route path={`${this.props.match.url}/posts`} component={Posts} />
-            <Route path={`${this.props.match.url}/favorites`} component={Favorites} />
-            <Route path={`${this.props.match.url}/comments`} component={Comments} />
-            <Route path={`${this.props.match.url}/about`} render={props => <About {...props} data={data} ownProfile={this.state.ownProfile} isFetching={this.state.isFetching} />} />
+            <Route path={`${this.props.match.path}/posts`} component={Posts} />
+            <Route path={`${this.props.match.path}/favorites`} component={Favorites} />
+            <Route path={`${this.props.match.path}/comments`} component={Comments} />
+            <Route path={`${this.props.match.path}/about`} render={props => <About {...props} data={data} ownProfile={this.state.ownProfile} isFetching={this.state.isFetching} />} />
           </Suspense>
         </section>
 
