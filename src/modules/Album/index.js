@@ -27,6 +27,7 @@ class Album extends React.Component {
     }
     Promise.all(promiseArray)
       .then((responses) => {
+        console.log(responses);
         this.setState(prevState => ({
           commentData: responses[0].data.data,
           albumData: (responses[1] && responses[1].data.data) || prevState.albumData,
@@ -53,19 +54,17 @@ class Album extends React.Component {
       headers: {
         Authorization: `Client-ID ${process.env.CLIENT_ID}`,
       },
-    })
-      .then((res) => {
-        this.setState({ commentData: res.data.data });
-      })
-      .catch(err => console.log(err));
+    });
   }
+
   handlePostedComment = (comment, CommentId) => {
-    const { commentData } = this.state;
-    const {  id } = this.props.location.state;
-    const { account_username } = this.context;
+    const { commentData, albumData } = this.state;
+    // const {  id } = this.props.location.state;
+    const { id } = albumData;
+    const { account_username: username } = this.context;
     const newCommentObj = {
       comment,
-      author: account_username,
+      author: username,
       id: CommentId,
       points: 1,
       image_id: id,
@@ -98,7 +97,7 @@ class Album extends React.Component {
         ) : (
           <h1>Loading Album Data</h1>
         )}
-        <BottomBar albumId={id} />
+        <BottomBar albumId={galleryHash} />
         <CommentBox
           albumId={galleryHash}
           handleCommentUpdate={this.handlePostedComment}
