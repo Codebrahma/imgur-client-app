@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Grid, Col, Row } from 'react-flexbox-grid';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AuthContext } from '../../context/AuthContext';
+import { updateAccountSettingApi } from '../../api';
 import Button from '../../components/Button';
 
 class About extends Component {
@@ -36,27 +36,22 @@ class About extends Component {
 
   updateBio = () => {
     if (this.state.bio !== this.props.data.bio) {
-      const { account_username: username, access_token: accessToken } = this.context;
-      axios({
-        method: 'put',
-        url: `https://api.imgur.com/3/account/${username}/settings`,
-        headers: { Authorization: `Bearer ${accessToken}` },
-        data: {
-          bio: this.state.bio,
-        },
-      }).then((res) => {
+      const { account_username: username } = this.context;
+      const { bio } = this.state;
+      updateAccountSettingApi(username, { bio })
+        .then((res) => {
         // TODO: Show a Success Toast.
-        console.log(res);
-        this.setState({
-          bio: this.state.bio,
-        });
-      }).catch((err) => {
+          console.log(res);
+          this.setState({
+            bio: this.state.bio,
+          });
+        }).catch((err) => {
         // TODO: Show a Error Toast.
-        console.log(err);
-        this.setState({
-          bio: this.props.data.bio,
+          console.log(err);
+          this.setState({
+            bio: this.props.data.bio,
+          });
         });
-      });
     }
     this.setState({ isEditing: false });
   }

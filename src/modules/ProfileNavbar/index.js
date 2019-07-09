@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
+import { userDetailsApi } from '../../api';
 import Button from '../../components/Button';
 import './ProfileNavbar.scss';
 
@@ -17,11 +17,7 @@ class ProfileNavbar extends Component {
 
     componentDidMount() {
       const { account_username: username } = this.context;
-      axios({
-        method: 'get',
-        url: `https://api.imgur.com/3/account/${username}`,
-        headers: { Authorization: `Client-ID ${process.env.CLIENT_ID}` },
-      }).then((res) => {
+      userDetailsApi(username).then((res) => {
         this.setState({
           avatar: res.data.data.avatar,
         });

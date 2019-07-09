@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactModal from 'react-modal';
-import axios from 'axios';
 import PropTypes from 'prop-types';
+import { reportUserApi } from '../../api';
 import './ReportUser.scss';
-import { AuthContext } from '../../context/AuthContext';
 
 class ReportUser extends React.Component {
-  static contextType = AuthContext;
   state = {
     open: true,
     slectedOption: '',
@@ -23,19 +21,9 @@ class ReportUser extends React.Component {
   handleReportUser = (e) => {
     const { commentId } = this.props;
     const { slectedOption } = this.state;
-    const { access_token } = this.context;
     e.preventDefault();
     if (slectedOption.length === 0) return;
-    axios({
-      url: `https://api.imgur.com/3/comment/${commentId}/report`,
-      method: 'post',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-      data: {
-        reason: slectedOption,
-      },
-    })
+    reportUserApi(commentId, slectedOption)
       .then((res) => {
         if (res.status === 200) {
           this.handleModal(true);

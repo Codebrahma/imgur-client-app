@@ -4,7 +4,7 @@ import { withRouter, Link } from 'react-router-dom';
 import LazyLoad from 'react-lazy-load';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+import { galleryVoatingApi } from '../../api';
 import { AuthContext } from '../../context/AuthContext';
 import './card.scss';
 
@@ -27,15 +27,8 @@ class Card extends React.Component {
   }
 
   handleVotingAPI = (vote, resetState) => {
-    const { access_token: accessToken } = this.context;
     const { id: galleryHash } = this.props.data;
-    axios({
-      url: `https://api.imgur.com/3/gallery/${galleryHash}/vote/${vote}`,
-      method: 'post',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+    galleryVoatingApi(galleryHash, vote)
       .then((res) => {
         console.log(res);
         if (!res.data.success) {
