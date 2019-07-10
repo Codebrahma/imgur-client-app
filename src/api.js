@@ -13,12 +13,12 @@ import {
   userProfileCommentsUrl,
 } from './apiUrl';
 
-const accessToken = localStorage.getItem('access_token');
+const getAccessToken = () => localStorage.getItem('access_token');
 
 const sendPost = (url, data = null) =>
   axios.post(url, data, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${getAccessToken()}`,
     },
   });
 
@@ -32,13 +32,13 @@ const sendGetPublic = url =>
 const sendGetPrivate = url =>
   axios(url, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${getAccessToken()}`,
     },
   });
 const sendPut = (url, data = null) =>
   axios.put(url, data, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${getAccessToken()}`,
     },
   });
 
