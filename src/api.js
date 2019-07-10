@@ -42,7 +42,7 @@ const sendPut = (url, data = null) =>
   });
 
 // the get request who uses access token as header goes under sendGetPrivate
-const galleryVoatingApi = (galleryHash, vote) =>
+const galleryVotingApi = (galleryHash, vote) =>
   sendGetPrivate(galleryVoatingUrl(galleryHash, vote));
 
 const favoriteAlbumApi = albumId => sendPost(favoriteUrl(albumId));
@@ -76,7 +76,7 @@ const updateAccountSettingApi = (username, data) =>
 
 export {
   favoriteAlbumApi,
-  galleryVoatingApi,
+  galleryVotingApi,
   reportUserApi,
   createCommentOrReply,
   voteForCommentAndReplyApi,
