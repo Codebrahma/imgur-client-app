@@ -47,6 +47,7 @@ class User extends Component {
 
   render() {
     const { data, isFetching } = this.state;
+    const { access_token: accessToken } = this.context;
     return (
       <div className="userpage">
 
@@ -74,9 +75,12 @@ class User extends Component {
                 <li>
                   <NavLink to={`${this.props.match.url}/favorites`}>Favorites</NavLink>
                 </li>
-                <li>
-                  <NavLink to={`${this.props.match.url}/comments`}>Comments</NavLink>
-                </li>
+                {
+                  accessToken &&
+                  <li>
+                    <NavLink to={`${this.props.match.url}/comments`}>Comments</NavLink>
+                  </li>
+                }
                 <li>
                   <NavLink to={`${this.props.match.url}/about`}>About</NavLink>
                 </li>
