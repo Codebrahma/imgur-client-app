@@ -21,7 +21,7 @@ body {
 }
 
 #index {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -31,6 +31,7 @@ body {
   top: 0;
   background: whitesmoke;
   padding: 1rem 0;
+  z-index: 100;
   
   .container {
     display: flex;
