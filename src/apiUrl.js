@@ -1,12 +1,14 @@
-export const userDetailsUrl = username => `https://api.imgur.com/3/account/${username}`;
-export const favoriteUrl = albumId => `https://api.imgur.com/3/album/${albumId}/favorite`;
-export const galleryVoatingUrl = (galleryHash, vote) => `https://api.imgur.com/3/gallery/${galleryHash}/vote/${vote}`;
-export const createCommentUrl = () => 'https://api.imgur.com/3/comment';
-export const createReplyUrl = commentId => `https://api.imgur.com/3/comment/${commentId}`;
-export const voteForCommentAndReplyUrl = (id, voteTypeForApi) => `https://api.imgur.com/3/comment/${id}/vote/${voteTypeForApi}`;
-export const reportCommentAndReplyUrl = commentId => `https://api.imgur.com/3/comment/${commentId}/report`;
-export const albumDataUrl = galleryHash => `https://api.imgur.com/3/gallery/album/${galleryHash}`;
-export const commentDataUrl = (galleryHash, sort = 'best') => `https://api.imgur.com/3/gallery/${galleryHash}/comments/${sort}`;
-export const userSettingUrl = username => `https://api.imgur.com/3/account/${username}/settings`;
-export const publicGalleryUrl = (section = 'hot', sort = 'viral', window = 'day', page = 0) => `https://api.imgur.com/3/gallery/${section}/${sort}/${window}/${page}`;
-export const userFavoriteGalleryUrl = (username, page = 0, favoritesSort = 'newest') => `https://api.imgur.com/3/account/${username}/favorites/${page}/${favoritesSort}`;
+const baseUrl = 'https://api.imgur.com/3';
+
+export const userDetailsUrl = username => `${baseUrl}/account/${username}`;
+export const favoriteUrl = albumId => `${baseUrl}/album/${albumId}/favorite`;
+export const galleryVoatingUrl = (galleryHash, vote) => `${baseUrl}/gallery/${galleryHash}/vote/${vote}`;
+export const createCommentUrl = () => `${baseUrl}/comment`;
+export const createReplyUrl = commentId => `${baseUrl}/comment/${commentId}`;
+export const voteForCommentAndReplyUrl = (id, voteTypeForApi) => `${baseUrl}/comment/${id}/vote/${voteTypeForApi}`;
+export const reportCommentAndReplyUrl = commentId => `${baseUrl}/comment/${commentId}/report`;
+export const albumDataUrl = galleryHash => `${baseUrl}/gallery/album/${galleryHash}`;
+export const commentDataUrl = (galleryHash, sort = 'best') => `${baseUrl}/gallery/${galleryHash}/comments/${sort}`;
+export const userSettingUrl = username => `${baseUrl}/account/${username}/settings`;
+export const publicGalleryUrl = (section = 'hot', sort = 'viral', window = 'day', page = 0) => `${baseUrl}/gallery/${section}/${sort}/${window}/${page}`;
+export const userFavoriteGalleryUrl = (username, page = 0, favoritesSort = 'newest') => `${baseUrl}/account/${username}/favorites/${page}/${favoritesSort}`;
