@@ -8,21 +8,28 @@ class Comments extends React.Component {
     this.state = {};
   }
   render() {
-    const { commentData } = this.props;
+    const { commentData, profileComment } = this.props;
     return (
       <div>
-        {commentData && commentData.map(comment => (
-          <Comment key={comment.id} commentProp={comment} />
-        ))}
+        {commentData &&
+          commentData.map(comment => (
+            <Comment
+              key={comment.id}
+              commentProp={comment}
+              profileComment={profileComment}
+            />
+          ))}
       </div>
     );
   }
 }
 Comments.propTypes = {
   commentData: PropTypes.instanceOf(Array),
+  profileComment: PropTypes.bool,
 };
 Comments.defaultProps = {
   commentData: [],
+  profileComment: false,
 };
 
 export default Comments;

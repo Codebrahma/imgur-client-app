@@ -106,9 +106,13 @@ class Comment extends React.Component {
       });
   };
   render() {
-    const { commentProp } = this.props;
+    const { commentProp, profileComment } = this.props;
     const {
-      author, comment, image_id: imageId, id,
+      author,
+      comment,
+      image_id: imageId,
+      id,
+      album_cover: albumCover,
     } = commentProp;
     const { replyBox } = this.props;
     const {
@@ -131,23 +135,38 @@ class Comment extends React.Component {
         )}
         <ToastContainer />
         <div className="commentWrapper">
-          <div className="voteIconWrapper">
-            <div className="voteIcon">
-              <FontAwesomeIcon
-                icon="arrow-alt-circle-up"
-                className={`ml_05 iconVote${(voted === 'up' && ' activeUp') ||
-                  ''}`}
-                focusable
-                onClick={() => this.handleVote('up')}
-              />
-              <FontAwesomeIcon
-                icon="arrow-alt-circle-down"
-                className={`ml_05 ${(voted === 'down' && ' activeDown') || ''}`}
-                focusable
-                onClick={() => this.handleVote('down')}
-              />
+          {profileComment && (
+            <LazyLoad className="fixToLeft padding">
+              <Link to={`/gallery/${imageId}`}>
+                {' '}
+                <img
+                  className="resizeImage"
+                  src={`https://i.imgur.com/${albumCover}.png`}
+                  alt="img"
+                />
+              </Link>
+            </LazyLoad>
+          )}
+          {!profileComment && (
+            <div className=" fixToLeft voteIconWrapper">
+              <div className="voteIcon">
+                <FontAwesomeIcon
+                  icon="arrow-alt-circle-up"
+                  className={`ml_05 iconVote${(voted === 'up' && ' activeUp') ||
+                    ''}`}
+                  focusable
+                  onClick={() => this.handleVote('up')}
+                />
+                <FontAwesomeIcon
+                  icon="arrow-alt-circle-down"
+                  className={`ml_05 ${(voted === 'down' && ' activeDown') ||
+                    ''}`}
+                  focusable
+                  onClick={() => this.handleVote('down')}
+                />
+              </div>
             </div>
-          </div>
+          )}
           <div className="detailsCommentWrapper">
             <Link
               className="commentHeaderItem"
@@ -196,12 +215,16 @@ class Comment extends React.Component {
                   )}
                 </LazyLoad>
               ))}
-            <FontAwesomeIcon
-              icon="reply"
-              onClick={() => this.setState({ showCommentBox: !showCommentBox })}
-              focusable
-              className="mi_05 replyIcon replyIconActive"
-            />
+            {!profileComment && (
+              <FontAwesomeIcon
+                icon="reply"
+                onClick={() =>
+                  this.setState({ showCommentBox: !showCommentBox })
+                }
+                focusable
+                className="mi_05 replyIcon replyIconActive"
+              />
+            )}
           </div>
           {showCommentBox && (
             <CommentBox
@@ -212,7 +235,7 @@ class Comment extends React.Component {
             />
           )}
         </div>
-        {replies && replies.length > 0 && (
+        {!profileComment && replies && replies.length > 0 && (
           <span
             className="expandReply"
             onClick={() => this.setState({ showReply: !showReply })}
@@ -252,9 +275,11 @@ Comment.propTypes = {
     points: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,
   replyBox: PropTypes.bool,
+  profileComment: PropTypes.bool,
 };
 Comment.defaultProps = {
   replyBox: false,
+  profileComment: false,
 };
 
 export default Comment;

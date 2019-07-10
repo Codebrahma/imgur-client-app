@@ -10,6 +10,7 @@ import {
   commentDataUrl,
   userDetailsUrl,
   userSettingUrl,
+  userProfileCommentsUrl,
 } from './apiUrl';
 
 const accessToken = localStorage.getItem('access_token');
@@ -44,6 +45,9 @@ const sendPut = (url, data = null) =>
 // the get request who uses access token as header goes under sendGetPrivate
 const galleryVoting = (galleryHash, vote) =>
   sendGetPrivate(galleryVoatingUrl(galleryHash, vote));
+
+const fetchUserProflieComment = (username, sort, page) =>
+  sendGetPrivate(userProfileCommentsUrl(username, sort, page));
 
 const addToFavorite = albumId => sendPost(favoriteUrl(albumId));
 
@@ -84,4 +88,5 @@ export {
   fetchCommentData,
   fetchUserDetails,
   updateAccountSetting,
+  fetchUserProflieComment,
 };
