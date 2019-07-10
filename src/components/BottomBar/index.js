@@ -1,9 +1,9 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import './bottomBar.scss';
 import { AuthContext } from '../../context/AuthContext';
+import { addToFavorite } from '../../api';
 
 class BottomBar extends React.Component {
   static contextType = AuthContext;
@@ -15,22 +15,15 @@ class BottomBar extends React.Component {
   }
   handleFavourite = (e) => {
     e.preventDefault();
-    const { access_token } = this.context;
-    if(!access_token) return;
+    const { access_token: accessToken } = this.context;
+    if (!accessToken) return;
     const { albumId } = this.props;
-    axios({
-      url: `https://api.imgur.com/3/album/${albumId}/favorite`,
-      method: 'post',
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
+    addToFavorite(albumId).then((res) => {
+      const { data } = res.data;
+      if (data === 'favorited') {
+        this.setState({ itemFavouriteState: true });
+      } else this.setState({ itemFavouriteState: false });
     })
-      .then((res) => {
-        const { data } = res.data;
-        if (data === 'favorited') {
-          this.setState({ itemFavouriteState: true });
-        } else this.setState({ itemFavouriteState: false });
-      })
       .catch(err => console.log(err));
   };
   render() {

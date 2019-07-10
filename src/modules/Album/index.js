@@ -1,7 +1,7 @@
 import React from 'react';
-import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import { match, location } from '../../routerPropTypes';
+import { fetchAlbumData, fetchCommentData } from '../../api';
 import Media from '../../components/Media';
 import BottomBar from '../../components/BottomBar';
 import CommentBox from '../../components/CommentBox';
@@ -36,24 +36,13 @@ class Album extends React.Component {
 
   fetchAlbumData = () => {
     const { galleryHash } = this.props.match.params;
-    return axios({
-      method: 'get',
-      url: `https://api.imgur.com/3/gallery/album/${galleryHash}`,
-      headers: {
-        Authorization: `Client-ID ${process.env.CLIENT_ID}`,
-      },
-    });
+    return fetchAlbumData(galleryHash);
   }
 
   fetchCommentData = () => {
     const { galleryHash } = this.props.match.params;
-    return axios({
-      method: 'get',
-      url: `https://api.imgur.com/3/gallery/${galleryHash}/comments/new`,
-      headers: {
-        Authorization: `Client-ID ${process.env.CLIENT_ID}`,
-      },
-    });
+    let sort;
+    return fetchCommentData(galleryHash, sort);
   }
 
   handlePostedComment = (comment, CommentId) => {

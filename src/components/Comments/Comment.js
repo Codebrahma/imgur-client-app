@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ToastContainer, toast } from 'react-toastify';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import './comment.scss';
 import CommentBox from '../CommentBox';
 import ReportUser from '../Modal/ReportUser';
+import { voteForCommentAndReply } from '../../api';
 import { AuthContext } from '../../context/AuthContext';
 
 class Comment extends React.Component {
@@ -88,16 +88,11 @@ class Comment extends React.Component {
     let extraPoint = 0;
     const voteTypeForApi = voted === voteType ? 'veto' : voteType;
     extraPoint = extraPoint === 0 && voteTypeForApi === 'up' ? 1 : extraPoint;
-    extraPoint = extraPoint === 0 && voteTypeForApi === 'down' ? -1 : extraPoint;
+    extraPoint =
+      extraPoint === 0 && voteTypeForApi === 'down' ? -1 : extraPoint;
     const tempPoint = tempPointForApi + extraPoint;
     this.setState({ voted: voteTypeForApi, points: tempPoint });
-    axios({
-      url: `https://api.imgur.com/3/comment/${id}/vote/${voteTypeForApi}`,
-      method: 'post',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+    voteForCommentAndReply(id, voteTypeForApi)
       .then((res) => {
         const { success } = res.data;
         if (!success) {

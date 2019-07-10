@@ -1,9 +1,9 @@
 import React, { Component, lazy, Suspense } from 'react';
 import { Route, NavLink } from 'react-router-dom';
 import { Grid } from 'react-flexbox-grid';
-import axios from 'axios';
 import { match } from '../../routerPropTypes';
 import { AuthContext } from '../../context/AuthContext';
+import { fetchUserDetails } from '../../api';
 import './User.scss';
 
 
@@ -36,11 +36,7 @@ class User extends Component {
   fetchUserData = () => {
     this.setState({ isFetching: true });
     const { username } = this.props.match.params;
-    axios({
-      method: 'get',
-      url: `https://api.imgur.com/3/account/${username}`,
-      headers: { Authorization: `Client-ID ${process.env.CLIENT_ID}` },
-    }).then((res) => {
+    fetchUserDetails(username).then((res) => {
       this.setState({
         data: res.data.data,
         isFetching: false,
