@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
-import { reportUserApi } from '../../api';
+import { reportUser } from '../../api';
 import './ReportUser.scss';
 
 class ReportUser extends React.Component {
@@ -23,7 +23,7 @@ class ReportUser extends React.Component {
     const { slectedOption } = this.state;
     e.preventDefault();
     if (slectedOption.length === 0) return;
-    reportUserApi(commentId, slectedOption)
+    reportUser(commentId, slectedOption)
       .then((res) => {
         if (res.status === 200) {
           this.handleModal(true);

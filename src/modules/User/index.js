@@ -3,7 +3,7 @@ import { Route, NavLink } from 'react-router-dom';
 import { Grid } from 'react-flexbox-grid';
 import { match } from '../../routerPropTypes';
 import { AuthContext } from '../../context/AuthContext';
-import { userDetailsApi } from '../../api';
+import { fetchUserDetails } from '../../api';
 import './User.scss';
 
 
@@ -36,7 +36,7 @@ class User extends Component {
   fetchUserData = () => {
     this.setState({ isFetching: true });
     const { username } = this.props.match.params;
-    userDetailsApi(username).then((res) => {
+    fetchUserDetails(username).then((res) => {
       this.setState({
         data: res.data.data,
         isFetching: false,

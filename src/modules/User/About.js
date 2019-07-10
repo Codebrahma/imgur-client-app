@@ -3,7 +3,7 @@ import { Grid, Col, Row } from 'react-flexbox-grid';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AuthContext } from '../../context/AuthContext';
-import { updateAccountSettingApi } from '../../api';
+import { updateAccountSetting } from '../../api';
 import Button from '../../components/Button';
 
 class About extends Component {
@@ -38,7 +38,7 @@ class About extends Component {
     if (this.state.bio !== this.props.data.bio) {
       const { account_username: username } = this.context;
       const { bio } = this.state;
-      updateAccountSettingApi(username, { bio })
+      updateAccountSetting(username, { bio })
         .then((res) => {
         // TODO: Show a Success Toast.
           console.log(res);

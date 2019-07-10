@@ -1,7 +1,7 @@
 import React from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { match, location } from '../../routerPropTypes';
-import { fetchAlbumDataApi, fetchCommentDataApi } from '../../api';
+import { fetchAlbumData, fetchCommentData } from '../../api';
 import Media from '../../components/Media';
 import BottomBar from '../../components/BottomBar';
 import CommentBox from '../../components/CommentBox';
@@ -36,13 +36,13 @@ class Album extends React.Component {
 
   fetchAlbumData = () => {
     const { galleryHash } = this.props.match.params;
-    return fetchAlbumDataApi(galleryHash);
+    return fetchAlbumData(galleryHash);
   }
 
   fetchCommentData = () => {
     const { galleryHash } = this.props.match.params;
     let sort;
-    return fetchCommentDataApi(galleryHash, sort);
+    return fetchCommentData(galleryHash, sort);
   }
 
   handlePostedComment = (comment, CommentId) => {

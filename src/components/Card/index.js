@@ -4,7 +4,7 @@ import { withRouter, Link } from 'react-router-dom';
 import LazyLoad from 'react-lazy-load';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
-import { galleryVotingApi } from '../../api';
+import { galleryVoting } from '../../api';
 import { AuthContext } from '../../context/AuthContext';
 import './card.scss';
 
@@ -28,7 +28,7 @@ class Card extends React.Component {
 
   handleVotingAPI = (vote, resetState) => {
     const { id: galleryHash } = this.props.data;
-    galleryVotingApi(galleryHash, vote)
+    galleryVoting(galleryHash, vote)
       .then((res) => {
         console.log(res);
         if (!res.data.success) {

@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './comment.scss';
 import CommentBox from '../CommentBox';
 import ReportUser from '../Modal/ReportUser';
-import { voteForCommentAndReplyApi } from '../../api';
+import { voteForCommentAndReply } from '../../api';
 import { AuthContext } from '../../context/AuthContext';
 
 class Comment extends React.Component {
@@ -92,7 +92,7 @@ class Comment extends React.Component {
       extraPoint === 0 && voteTypeForApi === 'down' ? -1 : extraPoint;
     const tempPoint = tempPointForApi + extraPoint;
     this.setState({ voted: voteTypeForApi, points: tempPoint });
-    voteForCommentAndReplyApi(id, voteTypeForApi)
+    voteForCommentAndReply(id, voteTypeForApi)
       .then((res) => {
         const { success } = res.data;
         if (!success) {

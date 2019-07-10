@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import './bottomBar.scss';
 import { AuthContext } from '../../context/AuthContext';
-import { favoriteAlbumApi } from '../../api';
+import { addToFavorite } from '../../api';
 
 class BottomBar extends React.Component {
   static contextType = AuthContext;
@@ -18,7 +18,7 @@ class BottomBar extends React.Component {
     const { access_token: accessToken } = this.context;
     if (!accessToken) return;
     const { albumId } = this.props;
-    favoriteAlbumApi(albumId).then((res) => {
+    addToFavorite(albumId).then((res) => {
       const { data } = res.data;
       if (data === 'favorited') {
         this.setState({ itemFavouriteState: true });

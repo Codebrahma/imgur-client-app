@@ -42,12 +42,12 @@ const sendPut = (url, data = null) =>
   });
 
 // the get request who uses access token as header goes under sendGetPrivate
-const galleryVotingApi = (galleryHash, vote) =>
+const galleryVoting = (galleryHash, vote) =>
   sendGetPrivate(galleryVoatingUrl(galleryHash, vote));
 
-const favoriteAlbumApi = albumId => sendPost(favoriteUrl(albumId));
+const addToFavorite = albumId => sendPost(favoriteUrl(albumId));
 
-const reportUserApi = (commentId, reason) =>
+const reportUser = (commentId, reason) =>
   sendPost(reportCommentAndReplyUrl(commentId), { reason });
 
 // here data is an object {comment:----,image_id:----,commnetId:----}
@@ -58,30 +58,30 @@ const createCommentOrReply = (data) => {
   return sendPost(url, data);
 };
 
-const voteForCommentAndReplyApi = (id, voteTypeForApi) =>
+const voteForCommentAndReply = (id, voteTypeForApi) =>
   sendPost(voteForCommentAndReplyUrl(id, voteTypeForApi));
 
 // the get request who uses client-id as header goes under sendGetPrivate
-const fetchAlbumDataApi = galleryHash =>
+const fetchAlbumData = galleryHash =>
   sendGetPublic(albumDataUrl(galleryHash));
 
-const fetchCommentDataApi = (galleryHash, sort = 'best') =>
+const fetchCommentData = (galleryHash, sort = 'best') =>
   sendGetPublic(commentDataUrl(galleryHash, sort));
 
-const userDetailsApi = username => sendGetPublic(userDetailsUrl(username));
+const fetchUserDetails = username => sendGetPublic(userDetailsUrl(username));
 
 // here the data is an object EX- {bio:----,username:---}
-const updateAccountSettingApi = (username, data) =>
+const updateAccountSetting = (username, data) =>
   sendPut(userSettingUrl(username), data);
 
 export {
-  favoriteAlbumApi,
-  galleryVotingApi,
-  reportUserApi,
+  addToFavorite,
+  galleryVoting,
+  reportUser,
   createCommentOrReply,
-  voteForCommentAndReplyApi,
-  fetchAlbumDataApi,
-  fetchCommentDataApi,
-  userDetailsApi,
-  updateAccountSettingApi,
+  voteForCommentAndReply,
+  fetchAlbumData,
+  fetchCommentData,
+  fetchUserDetails,
+  updateAccountSetting,
 };

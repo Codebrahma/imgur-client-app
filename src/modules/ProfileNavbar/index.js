@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
-import { userDetailsApi } from '../../api';
+import { fetchUserDetails } from '../../api';
 import Button from '../../components/Button';
 import './ProfileNavbar.scss';
 
@@ -17,7 +17,7 @@ class ProfileNavbar extends Component {
 
     componentDidMount() {
       const { account_username: username } = this.context;
-      userDetailsApi(username).then((res) => {
+      fetchUserDetails(username).then((res) => {
         this.setState({
           avatar: res.data.data.avatar,
         });
