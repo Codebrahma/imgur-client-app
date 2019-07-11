@@ -19,18 +19,27 @@ class Home extends Component {
         time: 0,
         rising: 0,
       },
+      loadMoreData: {
+        viral: true,
+        top: true,
+        time: true,
+        rising: true,
+      },
       section: 'hot',
       sort: 'viral', // Default
       loading: false,
-      loadMoreData: true,
     };
   }
 
   changeSort = (sort) => {
     this.setState(
-      { sort },
+      {
+        sort,
+        loading: false, // HELP: How to cancel current request?
+      },
       () => {
-        this.fetchData();
+        // If this is the first time the user has choosen this sort, then fetch data:
+        if (this.state.data[sort].length === 0) this.fetchData();
       },
     );
   }
@@ -72,7 +81,10 @@ class Home extends Component {
               [sort]: prevState.currentPage[sort] + 1,
             },
             loading: false,
-            loadMoreData: (res.data.data.length > 0), // data was fetched try again to fetch more data.
+            loadMoreData: {
+              ...prevState.loadMoreData,
+              [sort]: (res.data.data.length > 0), // data was fetched try again to fetch more data.
+            },
           }));
         })
         .catch(err => console.log(err));

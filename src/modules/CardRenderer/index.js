@@ -78,7 +78,8 @@ class CardRenderer extends React.Component {
 CardRenderer.propTypes = {
   fetchData: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
-  loadMoreData: PropTypes.bool.isRequired,
+  // TODO: Add detailed propTypes:
+  loadMoreData: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired,
 };
 

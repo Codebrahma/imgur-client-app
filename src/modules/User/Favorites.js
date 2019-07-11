@@ -16,16 +16,23 @@ class Favorites extends Component {
         newest: 0,
         oldest: 0,
       },
-      favoritesSort: 'newest',
+      loadMoreData: {
+        newest: true,
+        oldest: true,
+      },
+      favoritesSort: 'newest', // Default
       loading: false,
-      loadMoreData: true,
     };
   }
 
   changeSort = (sort) => {
     this.setState(
-      { favoritesSort: sort },
+      {
+        favoritesSort: sort,
+        loading: false, // HELP: How to cancel current request?
+      },
       () => {
+        // If this is the first time the user has choosen this sort, then fetch data:
         this.fetchData();
       },
     );
@@ -63,7 +70,10 @@ class Favorites extends Component {
               [favoritesSort]: prevState.currentPage[favoritesSort] + 1,
             },
             loading: false,
-            loadMoreData: (res.data.data.length > 0), // data was fetched try again to fetch more data.
+            loadMoreData: {
+              ...prevState.loadMoreData,
+              [favoritesSort]: (res.data.data.length > 0), // data was fetched try again to fetch more data.
+            },
           }));
         })
         .catch(err => console.log(err));
@@ -85,6 +95,8 @@ class Favorites extends Component {
     const {
       data, loading, favoritesSort, loadMoreData,
     } = this.state;
+
+    console.log(this.state);
 
     return (
       <Grid>
