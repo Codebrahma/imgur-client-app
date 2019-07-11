@@ -79,7 +79,7 @@ CardRenderer.propTypes = {
   fetchData: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   // TODO: Add detailed propTypes:
-  loadMoreData: PropTypes.object.isRequired,
+  loadMoreData: PropTypes.bool.isRequired,
   data: PropTypes.array.isRequired,
 };
 

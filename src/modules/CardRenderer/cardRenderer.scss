@@ -1,26 +1,11 @@
 
 .cardRenderer {
     &__controls {
-        background: navajowhite;
+        // background: navajowhite;
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin: 1rem 0;
-
-        &--favorites {
-            flex: 1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rebeccapurple;
-
-            h1 {
-                margin: 0;
-            }
-            button {
-                margin-left: 1rem;
-            }
-        }
 
         &--common {
             display: flex;
@@ -28,9 +13,70 @@
             align-items: center;
 
             button {
-                margin-left: 1rem;
+                margin-left: 1.5rem;
+            }
+        }
+
+        &--favorites {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            // background: rebeccapurple;
+
+            h1 {
+                margin: 0;
+            }
+        }
+
+        &__dropdown {
+            margin-left: 1.5rem;
+            position: relative;
+            
+            &__header {
+                cursor: pointer;
+                span {
+                    text-transform: uppercase;
+                    margin-right: 10px;
+                }
             }
 
+            &__triangle {
+                position: absolute;
+                width: 0.8rem;
+                height: 0.8rem;
+                background: #dddddd;
+                transform: rotate(45deg);
+                right: -1.5px;
+            }
+            
+            &__options {
+                // box-sizing: border-box;
+                z-index: 10;
+                position: absolute;
+                background: #dddddd;
+                margin-top: 0.4rem;
+                border-radius: 8px;
+                padding: 0.5rem 0;
+                
+                
+                div {
+                    padding: 0.5rem;
+                    padding-right: 2rem;
+                    cursor: pointer;
+                    text-transform: uppercase;
+
+                    &.active {
+                        font-weight: 700;
+                    }
+                    &:hover {
+                        background: #cccccc;
+                    }
+                }
+                    button {
+                        // margin-left: 1rem;
+                    }
+            }
         }
     }
 }

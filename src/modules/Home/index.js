@@ -11,19 +11,16 @@ class Home extends Component {
         viral: [],
         top: [],
         time: [],
-        rising: [],
       },
       currentPage: {
         viral: 0,
         top: 0,
         time: 0,
-        rising: 0,
       },
       loadMoreData: {
         viral: true,
         top: true,
         time: true,
-        rising: true,
       },
       section: 'hot',
       sort: 'viral', // Default
@@ -113,11 +110,11 @@ class Home extends Component {
       <Grid>
         <h1>Home</h1>
         <CardRenderer
-          controls={this.controls}
           loading={loading}
-          data={data[sort]}
           fetchData={this.fetchData}
-          loadMoreData={loadMoreData}
+          data={data[sort]}
+          loadMoreData={loadMoreData[sort]}
+          controls={this.controls}
         />
       </Grid>
     );
