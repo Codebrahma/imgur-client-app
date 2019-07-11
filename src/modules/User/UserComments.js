@@ -35,12 +35,14 @@ class UserComments extends Component {
     const { commentData, loading } = this.state;
     return (
       <Grid>
-        {loading &&
+        <div className="userpage__section--comment">
+          {loading &&
           <div className="loader">
             <Loader type="Oval" color="#6BD700" height="80" width="80" />
           </div>
            }
-        <Comments commentData={commentData} profileComment />
+          <Comments commentData={commentData} profileComment />
+        </div>
       </Grid>
     );
   }
