@@ -9,12 +9,13 @@ class Comments extends React.Component {
   }
   render() {
     const { commentData, profileComment } = this.props;
+    console.log(commentData);
     return (
       <div>
         {commentData &&
           commentData.map(comment => (
             <Comment
-              key={comment.id}
+              key={comment.datetime + comment.id}
               commentProp={comment}
               profileComment={profileComment}
             />
