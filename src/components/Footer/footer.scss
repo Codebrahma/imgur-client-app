@@ -1,0 +1,20 @@
+.footer {
+    background-color: #F5F5F5;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    &__text {
+    color:#2E3035;
+    padding: 1rem;
+    }
+    &__show {
+        display: block;
+        transition: display 1s;
+    }
+    &__hide {
+        display: none;
+        transition: display 1s;
+    }
+}
