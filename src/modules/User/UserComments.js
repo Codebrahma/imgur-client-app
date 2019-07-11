@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Grid } from 'react-flexbox-grid';
 import PropTypes from 'prop-types';
 import Loader from 'react-loader-spinner';
+import { debounce } from 'throttle-debounce';
 import { fetchUserProflieComment } from '../../api';
 import Comments from '../../components/Comments';
 
@@ -13,36 +14,79 @@ class UserComments extends Component {
       sort: 'newest',
       commentData: [],
       loading: true,
+      loadMoreData: false,
     };
   }
+  componentWillMount() {
+    this.tempDebounceFuncVariable = debounce(300, this.handleOnScroll);
+    window.addEventListener('scroll', this.tempDebounceFuncVariable);
+  }
+
   componentDidMount() {
     this.loadCommentData(this.state.currentPage);
   }
-
-  // TODO: add infinite scroll for loading more comments.
-
-  loadCommentData = (currentPage) => {
-    const { username } = this.props.match.params;
-    const { sort, commentData } = this.state;
-    fetchUserProflieComment(username, sort, currentPage)
-      .then((res) => {
-        const tempCommentData = [...res.data.data, ...commentData];
-        this.setState({ commentData: tempCommentData, loading: false });
-      }).catch(err => console.log(err));
+  componentWillUnmount() {
+    window.removeEventListener(
+      'scroll',
+      this.tempDebounceFuncVariable.cancel(),
+    );
   }
+  // TODO: add infinite scroll for loading more comments.
+  handleOnScroll = () => {
+    const { loading, loadMoreData } = this.state;
+
+    // Bail early if:
+    // loading: it's already loading
+    // !loadMoreData: there's nothing left to load
+    if (!loadMoreData || loading) return;
+
+    const scrollTop =
+      (document.documentElement && document.documentElement.scrollTop) ||
+      document.body.scrollTop;
+    const scrollHeight =
+      (document.documentElement && document.documentElement.scrollHeight) ||
+      document.body.scrollHeight;
+    const clientHeight =
+      document.documentElement.clientHeight || window.innerHeight;
+    const scrolledToBottom =
+      Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+    if (scrolledToBottom) {
+      this.setState({ loading: true }, () => {
+        const nextLoadingPage = this.state.currentPage + 1;
+        this.loadCommentData(nextLoadingPage);
+      });
+    }
+  };
+
+  loadCommentData = (currentLoadingPage) => {
+    const { username } = this.props.match.params;
+    const { sort } = this.state;
+    let { commentData } = this.state;
+    fetchUserProflieComment(username, sort, currentLoadingPage)
+      .then((res) => {
+        commentData = [...commentData, ...res.data.data];
+        this.setState({
+          commentData,
+          loading: false,
+          loadMoreData: res.data.data.length > 0,
+          currentPage: currentLoadingPage,
+        });
+      })
+      .catch(err => console.log(err));
+  };
 
   render() {
     const { commentData, loading } = this.state;
     return (
       <Grid>
         <div className="userpage__section--comment">
-          {loading &&
-          <div className="loader">
-            <Loader type="Oval" color="#6BD700" height="80" width="80" />
-          </div>
-           }
           <Comments commentData={commentData} profileComment />
         </div>
+        {loading && (
+        <div className="userpage__section--comment-loader">
+          <Loader type="Oval" color="#6BD700" height="80" width="80" />
+        </div>
+          )}
       </Grid>
     );
   }

@@ -141,5 +141,10 @@
             margin:2rem auto;
             padding-left: 3rem;
         }
+        &--comment-loader {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+         }
     }
 }
