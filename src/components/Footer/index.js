@@ -1,5 +1,6 @@
 import React from 'react';
 import { debounce } from 'throttle-debounce';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './footer.scss';
 
 let lastScroll = 0;
@@ -47,7 +48,12 @@ class Footer extends React.Component {
           scrollUpAndShowFooter ? 'footer__show' : 'footer__hide'
         }`}
       >
-        <div className="footer__text">Imgur Client</div>
+        <div className="footer__text">
+          <span className="footer__text">Imgur Client</span>
+          <a href="https://github.com/Codebrahma/imgur-client-app" target="_blank" rel="noopener noreferrer">
+            <FontAwesomeIcon icon={['fab', 'github']} />
+          </a>
+        </div>
       </footer>
     );
   }
