@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { AuthContext } from '../../context/AuthContext';
 import { fetchUserDetails } from '../../api';
+import { history } from '../../routerPropTypes';
 import Button from '../../components/Button';
 import './ProfileNavbar.scss';
 
@@ -34,10 +36,20 @@ class ProfileNavbar extends Component {
             : null}
           </Link>
           {/* <span className="profileNavbar__username">{username}</span> */}
-          <Button handleClick={logOut}>Logout</Button>
+          <Button handleClick={() => {
+            logOut();
+            this.props.history.push('/');
+          }}
+          >Logout
+          </Button>
         </div>
       );
     }
 }
 
-export default ProfileNavbar;
+ProfileNavbar.propTypes = {
+  history: history.isRequired,
+};
+
+
+export default withRouter(ProfileNavbar);
