@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Grid } from 'react-flexbox-grid';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import CardRenderer from '../CardRenderer';
+import Selector from '../CardRenderer/Selector';
 
 class Favorites extends Component {
   constructor(props) {
@@ -83,24 +83,16 @@ class Favorites extends Component {
 
   controls = () => {
     const { sort } = this.state;
-    console.log(this.state);
 
     return (
-
       <div className="cardRenderer__controls--favorites">
         <h1>All Favorites</h1>
 
-        <div className="cardRenderer__controls__dropdown">
-          <div className="cardRenderer__controls__dropdown__header">
-            <span>{this.state.sort}</span>
-            <FontAwesomeIcon icon="caret-down" />
-          </div>
-          <div className="cardRenderer__controls__dropdown__triangle" />
-          <div className="cardRenderer__controls__dropdown__options">
-            <div className={sort === 'newest' ? 'active' : ''} onClick={() => this.changeSort('newest')}>Newest</div>
-            <div className={sort === 'oldest' ? 'active' : ''} onClick={() => this.changeSort('oldest')}>Oldest</div>
-          </div>
-        </div>
+        <Selector
+          options={['newest', 'oldest']}
+          currentOption={sort}
+          handleClick={option => this.changeSort(option)}
+        />
 
       </div>
     );
