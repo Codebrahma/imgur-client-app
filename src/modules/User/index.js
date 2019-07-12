@@ -9,7 +9,7 @@ import './User.scss';
 
 const Posts = lazy(() => import('./Posts'));
 const Favorites = lazy(() => import('./Favorites'));
-const Comments = lazy(() => import('./Comments'));
+const UserComments = lazy(() => import('./UserComments'));
 const About = lazy(() => import('./About'));
 
 class User extends Component {
@@ -47,6 +47,7 @@ class User extends Component {
 
   render() {
     const { data, isFetching } = this.state;
+    const { access_token: accessToken } = this.context;
     return (
       <div className="userpage">
 
@@ -74,9 +75,12 @@ class User extends Component {
                 <li>
                   <NavLink to={`${this.props.match.url}/favorites`}>Favorites</NavLink>
                 </li>
-                <li>
-                  <NavLink to={`${this.props.match.url}/comments`}>Comments</NavLink>
-                </li>
+                {
+                  accessToken &&
+                  <li>
+                    <NavLink to={`${this.props.match.url}/comments`}>Comments</NavLink>
+                  </li>
+                }
                 <li>
                   <NavLink to={`${this.props.match.url}/about`}>About</NavLink>
                 </li>
@@ -89,7 +93,7 @@ class User extends Component {
           <Suspense fallback={<div />}>
             <Route path={`${this.props.match.path}/posts`} component={Posts} />
             <Route path={`${this.props.match.path}/favorites`} component={Favorites} />
-            <Route path={`${this.props.match.path}/comments`} component={Comments} />
+            <Route path={`${this.props.match.path}/comments`} component={UserComments} />
             <Route path={`${this.props.match.path}/about`} render={props => <About {...props} data={data} ownProfile={this.state.ownProfile} isFetching={this.state.isFetching} />} />
           </Suspense>
         </section>

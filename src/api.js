@@ -10,14 +10,15 @@ import {
   commentDataUrl,
   userDetailsUrl,
   userSettingUrl,
+  userProfileCommentsUrl,
 } from './apiUrl';
 
-const accessToken = localStorage.getItem('access_token');
+const getAccessToken = () => localStorage.getItem('access_token');
 
 const sendPost = (url, data = null) =>
   axios.post(url, data, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${getAccessToken()}`,
     },
   });
 
@@ -31,19 +32,22 @@ const sendGetPublic = url =>
 const sendGetPrivate = url =>
   axios(url, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${getAccessToken()}`,
     },
   });
 const sendPut = (url, data = null) =>
   axios.put(url, data, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${getAccessToken()}`,
     },
   });
 
 // the get request who uses access token as header goes under sendGetPrivate
 const galleryVoting = (galleryHash, vote) =>
   sendGetPrivate(galleryVoatingUrl(galleryHash, vote));
+
+const fetchUserProflieComment = (username, sort, page) =>
+  sendGetPrivate(userProfileCommentsUrl(username, sort, page));
 
 const addToFavorite = albumId => sendPost(favoriteUrl(albumId));
 
@@ -84,4 +88,5 @@ export {
   fetchCommentData,
   fetchUserDetails,
   updateAccountSetting,
+  fetchUserProflieComment,
 };
