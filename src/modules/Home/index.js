@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import { Grid } from 'react-flexbox-grid';
 import axios from 'axios';
 import CardRenderer from '../CardRenderer';
+import Selector from '../CardRenderer/Selector';
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: {
-        viral: [],
+        viral: [], // Popular
         top: [],
-        time: [],
+        rising: [], // Rising (User Section Only)
+        time: [], // Newest
       },
       currentPage: {
         viral: 0,
@@ -22,9 +24,14 @@ class Home extends Component {
         top: true,
         time: true,
       },
-      section: 'hot',
+      section: 'hot', // {' hot':'Most Viral', 'user': 'User Submitted'}
       sort: 'viral', // Default
       loading: false,
+      params: { // Optional:
+        showViral: true, // Show or hide viral images from the user section
+        mature: false,
+        album_previews: true, // Include image metadata for gallery posts which are albums
+      },
     };
   }
 
@@ -42,18 +49,15 @@ class Home extends Component {
   }
 
   fetchData = () => {
-    const { currentPage, sort, section } = this.state;
+    const {
+      currentPage, sort, section, params,
+    } = this.state;
+
     this.setState({ loading: true }, () => {
       axios({
         method: 'get',
         url: `https://api.imgur.com/3/gallery/${section}/${sort}/all/${currentPage[sort]}`,
-        // params: this.props.params,
-        // TODO: Add some kind of controller.
-        // params={{
-        //   showViral: true,
-        //   mature: true,
-        //   album_previews: true,
-        // }}
+        params,
         headers: {
           Authorization: `Client-ID ${process.env.CLIENT_ID}`,
         },
@@ -88,17 +92,21 @@ class Home extends Component {
     });
   };
 
-  controls = () => (
-    <div className="cardRenderer__controls--favorites">
-      <h1>Home</h1>
+  controls = () => {
+    const { sort } = this.state;
+    return (
+      <div className="cardRenderer__controls--favorites">
+        <h1>Home</h1>
 
-      <div>
-        <button onClick={() => this.changeSort('viral')}>Popular</button>
-        <button onClick={() => this.changeSort('top')}>Top</button>
-        <button onClick={() => this.changeSort('time')}>Newest</button>
+        <Selector
+          options={['viral', 'top', 'time']}
+          currentOption={sort}
+          handleClick={this.changeSort}
+        />
+
       </div>
-    </div>
-  )
+    );
+  }
 
 
   render() {
