@@ -50,7 +50,7 @@ class CardRenderer extends React.Component {
   };
 
   render() {
-    const { data, loading } = this.props;
+    const { data, loadMoreData } = this.props;
     return (
       <div className="cardRenderer">
         <div className="cardRenderer__controls">
@@ -61,16 +61,27 @@ class CardRenderer extends React.Component {
           </div>
         </div>
 
-        <div className="cardListWrapper">
-          {data.map(card => (
-            <Card key={card.id} className="cardItem" data={card} />
-          ))}
-        </div>
-        <div className="loader">
-          {loading &&
-            <Loader type="Oval" color="#6BD700" height="80" width="80" />
-          }
-        </div>
+        { data.length === 0 ?
+            (
+              <div className="loader">
+                <Loader type="Oval" color="#6BD700" height="80" width="80" />
+              </div>
+            )
+            : (
+              <React.Fragment>
+                <div className="cardListWrapper">
+                  {data.map(card => (
+                    <Card key={card.id} className="cardItem" data={card} />
+                      ))}
+                </div>
+                <div className="loader">
+                  {loadMoreData &&
+                  <Loader type="Oval" color="#6BD700" height="80" width="80" />
+                    }
+                </div>
+              </React.Fragment>
+              )
+      }
       </div>
     );
   }
