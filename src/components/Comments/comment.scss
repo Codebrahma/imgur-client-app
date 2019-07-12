@@ -5,10 +5,22 @@
 .replyIcon {
   display: none;
 }
-.voteIconWrapper {
+.fixToLeft {
   position: absolute;
-  display: none;
   right: calc(100%);
+  overflow: inherit;
+}
+.resizeImage{
+  width: 80px;
+  height:80px;
+  border-radius: 6px;
+}
+.padding{
+  margin-right: 10px;
+  top:0;
+}
+.voteIconWrapper {
+  display: none;
   color: white;
 }
 .voteIcon {
