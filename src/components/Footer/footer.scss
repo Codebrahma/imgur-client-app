@@ -5,7 +5,8 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    transition:  transform .5s ease-in-out;
+    transition:  transform .3s ease-in-out;
+    z-index: 50;
     &__text {
     color:#2E3035;
     padding: 0.5rem;

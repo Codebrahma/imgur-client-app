@@ -2,17 +2,20 @@ import React from 'react';
 import { debounce } from 'throttle-debounce';
 import './footer.scss';
 
+let lastScroll = 0;
 
 class Footer extends React.Component {
   constructor() {
     super();
     this.state = {
-      lastScroll: 0,
       scrollUpAndShowFooter: true,
     };
   }
   componentWillMount() {
-    this.tempDebounceFuncVariable = debounce(300, this.detectDirectionOfScroll);
+    this.tempDebounceFuncVariable = debounce(
+      1000,
+      this.detectDirectionOfScroll,
+    );
     window.addEventListener('scroll', this.tempDebounceFuncVariable);
   }
   componentWillUnmount() {
@@ -22,17 +25,28 @@ class Footer extends React.Component {
     );
   }
   detectDirectionOfScroll = () => {
-    const { lastScroll } = this.state;
-    const currentScrollTopVal = document.body.scrollTop || document.documentElement.scrollTop;
-    this.setState({
-      lastScroll: currentScrollTopVal,
-      scrollUpAndShowFooter: lastScroll > currentScrollTopVal,
-    });
-  }
+    const { scrollUpAndShowFooter } = this.state;
+    const currentScrollTopVal =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    if (!scrollUpAndShowFooter && lastScroll > currentScrollTopVal) {
+      this.setState({
+        scrollUpAndShowFooter: true,
+      });
+    } else if (scrollUpAndShowFooter && lastScroll < currentScrollTopVal) {
+      this.setState({
+        scrollUpAndShowFooter: false,
+      });
+    }
+    lastScroll = currentScrollTopVal;
+  };
   render() {
     const { scrollUpAndShowFooter } = this.state;
     return (
-      <footer className={`footer ${scrollUpAndShowFooter ? 'footer__show' : 'footer__hide'}`}>
+      <footer
+        className={`footer ${
+          scrollUpAndShowFooter ? 'footer__show' : 'footer__hide'
+        }`}
+      >
         <div className="footer__text">Imgur Client</div>
       </footer>
     );
