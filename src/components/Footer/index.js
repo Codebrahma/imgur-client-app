@@ -14,7 +14,7 @@ class Footer extends React.Component {
   }
   componentWillMount() {
     this.tempDebounceFuncVariable = debounce(
-      1000,
+      300,
       this.detectDirectionOfScroll,
     );
     window.addEventListener('scroll', this.tempDebounceFuncVariable);
