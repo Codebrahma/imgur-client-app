@@ -1,16 +1,27 @@
-import React from "react";
-import logo from "../svgs/logo";
-import { Auth } from "../modules";
-import { Grid } from "react-flexbox-grid";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Grid } from 'react-flexbox-grid';
+import logo from '../svgs/logo';
+import { AuthContext } from '../context/AuthContext';
+import Auth from '../modules/Auth';
+import ProfileNavbar from '../modules/ProfileNavbar';
 
 const Navbar = () => (
-  <nav>
-    {/* <div className="container"> */}
+  <nav className="nav">
     <Grid>
-      {logo}
-      <Auth />
+      <Link to="/">
+        {logo}
+      </Link>
+
+      {/* <SearchModuleORComponent /> will come here. */}
+
+      <AuthContext.Consumer>
+        { value => (
+          value.access_token ? <ProfileNavbar /> : <Auth />
+        )}
+      </AuthContext.Consumer>
+
     </Grid>
-    {/* </div> */}
   </nav>
 );
 export default Navbar;

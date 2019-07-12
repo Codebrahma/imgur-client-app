@@ -1,3 +1,5 @@
+@import './mixins.scss';
+
 // Normalizing:
 body {
   padding: 0;
@@ -5,8 +7,7 @@ body {
 }
 
 :root {
-  font-size: 16px;
-  font-family: sans-serif;
+  @include font-lato($size: 18px, $color: #282828);
 }
 
 .auth {
@@ -20,16 +21,17 @@ body {
 }
 
 #index {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-nav {
+.nav {
   position: sticky;
   top: 0;
   background: whitesmoke;
   padding: 1rem 0;
+  z-index: 100;
   
   .container {
     display: flex;
@@ -43,4 +45,10 @@ main {
 
 footer {
   background: whitesmoke;
+}
+
+.flexCenterAlign {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

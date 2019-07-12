@@ -1,0 +1,27 @@
+// TODO: Containerize these classes as it clashes with .active
+.commnetBoxWrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: #303237;
+    width: 100%;
+    min-width: 45px;
+    border-radius: 4px;
+    
+    .button{
+        width: 80px;
+        height: 40px;
+        align-self: flex-end;
+        color:white;
+        background-color: #6C6C6C;
+        border-color: #6C6C6C;
+    }
+    .active {
+        background-color:#00C56B;
+        border-color: #00C56B;
+    }
+    .textArea {
+        background-color: #303237;
+        color: white;
+        resize: none;
+    }
+}

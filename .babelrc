@@ -2,6 +2,11 @@
   "presets": ["env", "react"],
   "plugins": [
     "babel-plugin-transform-class-properties",
-    "dynamic-import-webpack"
+    "dynamic-import-webpack",
+    "transform-object-rest-spread",
+    ["transform-runtime",
+      {
+        "regenerator": true
+      }]
 ]
 }
