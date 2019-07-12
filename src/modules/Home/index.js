@@ -116,7 +116,6 @@ class Home extends Component {
 
     return (
       <Grid>
-        <h1>Home</h1>
         <CardRenderer
           loading={loading}
           fetchData={this.fetchData}
