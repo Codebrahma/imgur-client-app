@@ -9,7 +9,6 @@ class Comments extends React.Component {
   }
   render() {
     const { commentData, profileComment } = this.props;
-    console.log(commentData);
     return (
       <div>
         {commentData &&

@@ -1,5 +1,5 @@
 import React from 'react';
-import { debounce } from 'throttle-debounce';
+import { throttle } from 'throttle-debounce';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './footer.scss';
 
@@ -13,7 +13,7 @@ class Footer extends React.Component {
     };
   }
   componentWillMount() {
-    this.tempDebounceFuncVariable = debounce(
+    this.tempDebounceFuncVariable = throttle(
       300,
       this.detectDirectionOfScroll,
     );
