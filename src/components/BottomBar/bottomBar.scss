@@ -6,6 +6,12 @@
     min-height: 45px;
     background-color: #303237;
     border-radius: 4px;
+    &--up {
+        color: #1BB76E;
+    }
+    &--down {
+        color: #DB3535;
+    }
 }
 .favourite {
     color: #00D9BC;

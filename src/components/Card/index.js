@@ -28,6 +28,7 @@ class Card extends React.Component {
 
   handleVotingAPI = (vote, resetState) => {
     const { id: galleryHash } = this.props.data;
+    const { markAlbumAsVoted } = this.context;
     galleryVoting(galleryHash, vote)
       .then((res) => {
         console.log(res);
@@ -35,6 +36,7 @@ class Card extends React.Component {
           // Reset to currentState:
           this.setState(resetState);
         }
+        markAlbumAsVoted(galleryHash, vote);
       })
       .catch((err) => {
         // TODO: Send a toast about error and reset.
@@ -76,8 +78,8 @@ class Card extends React.Component {
 
   render() {
     const { data } = this.props;
-    const { access_token: accessToken } = this.context;
-    const { voted, ups, downs } = this.state;
+    const { access_token: accessToken, votedAlbum } = this.context;
+    const { ups, downs } = this.state;
     return (
       <Link
         className="cardLink"
@@ -86,7 +88,7 @@ class Card extends React.Component {
             state: data,
           }}
       >
-        <div className={`cardWrapper${voted ? ` voted--${voted}` : ''}`}>
+        <div className={`cardWrapper${votedAlbum[data.id] ? ` voted--${votedAlbum[data.id]}` : ''}`}>
           <div className="mediaWrapper">
             <LazyLoad >
               {data && data.images && data.images[0].type === 'video/mp4' ? (
@@ -113,12 +115,12 @@ class Card extends React.Component {
           <div className="detailsWrapper">
             <div className="title">{data && data.title}</div>
             <div className="countWrapper">
-              <div className={`statContainer green${voted === 'up' ? ' active' : ''}`} onClick={this.handleUpvote} role="button" onKeyDown={e => this.handleEnter(e, this.handleUpvote)} tabIndex={0}>
+              <div className={`statContainer green${votedAlbum[data.id] === 'up' ? ' active' : ''}`} onClick={this.handleUpvote} role="button" onKeyDown={e => this.handleEnter(e, this.handleUpvote)} tabIndex={0}>
                 <FontAwesomeIcon icon="arrow-alt-circle-up" />
                 <span>{ups}</span>
               </div>
               { accessToken &&
-                <div className={`statContainer red${voted === 'down' ? ' active' : ''}`} onClick={this.handleDownvote} role="button" onKeyDown={e => this.handleEnter(e, this.handleDownvote)} tabIndex={0}>
+                <div className={`statContainer red${votedAlbum[data.id] === 'down' ? ' active' : ''}`} onClick={this.handleDownvote} role="button" onKeyDown={e => this.handleEnter(e, this.handleDownvote)} tabIndex={0}>
                   <FontAwesomeIcon icon="arrow-alt-circle-down" />
                   <span>{downs}</span>
                 </div>

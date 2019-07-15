@@ -76,7 +76,6 @@ class Album extends React.Component {
   render() {
     const { albumData, commentData } = this.state;
     const { galleryHash } = this.props.match.params;
-
     return (
       <div className="albumWrapper">
         { albumData ? (

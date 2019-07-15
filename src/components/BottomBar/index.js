@@ -28,10 +28,19 @@ class BottomBar extends React.Component {
   };
   render() {
     const { itemFavouriteState } = this.state;
+    const { votedAlbum } = this.context;
+    const { albumId } = this.props;
+    const votedUp = votedAlbum[albumId] === 'up';
     return (
       <div className="bottomWrapper">
-        <FontAwesomeIcon icon="arrow-alt-circle-up" />
-        <FontAwesomeIcon icon="arrow-alt-circle-down" />
+        <FontAwesomeIcon
+          className={votedUp ? `bottomWrapper--${votedAlbum[albumId]}` : ''}
+          icon="arrow-alt-circle-up"
+        />
+        <FontAwesomeIcon
+          className={!votedUp ? `bottomWrapper--${votedAlbum[albumId]}` : ''}
+          icon="arrow-alt-circle-down"
+        />
         <FontAwesomeIcon
           onClick={this.handleFavourite}
           icon="heart"
