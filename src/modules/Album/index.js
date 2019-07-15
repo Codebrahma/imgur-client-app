@@ -76,6 +76,8 @@ class Album extends React.Component {
   render() {
     const { albumData, commentData } = this.state;
     const { galleryHash } = this.props.match.params;
+    const { ups, downs, views } = this.props.location.state;
+    const data = { ups, downs, views };
     return (
       <div className="albumWrapper">
         { albumData ? (
@@ -83,9 +85,9 @@ class Album extends React.Component {
         ) : (
           <h1>Loading Album Data</h1>
         )}
-        <BottomBar albumId={galleryHash} />
+        <BottomBar albumId={galleryHash} data={data} />
         <CommentBox
-          albumId={galleryHash}
+          commnet={galleryHash}
           handleCommentUpdate={this.handlePostedComment}
         />
 
