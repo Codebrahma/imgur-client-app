@@ -1,8 +1,6 @@
 import React from 'react';
 import Loader from 'react-loader-spinner';
-import axios from 'axios';
 import PropTypes from 'prop-types';
-import { Grid } from 'react-flexbox-grid';
 import { debounce } from 'throttle-debounce';
 import Card from '../../components/Card';
 import './cardRenderer.scss';
@@ -10,12 +8,7 @@ import './cardRenderer.scss';
 class CardRenderer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      cardData: [],
-      currentPage: 0,
-      loading: false,
-      loadMoreData: true,
-    };
+    this.state = { };
   }
   componentWillMount() {
     this.tempDebounceFuncVariable = debounce(300, this.handleOnScroll);
@@ -23,8 +16,7 @@ class CardRenderer extends React.Component {
   }
 
   componentDidMount() {
-    const { currentPage } = this.state;
-    this.loadData(currentPage);
+    this.props.fetchData();
   }
 
   componentWillUnmount() {
@@ -35,7 +27,7 @@ class CardRenderer extends React.Component {
   }
 
   handleOnScroll = () => {
-    const { currentPage, loading, loadMoreData } = this.state;
+    const { loading, loadMoreData } = this.props;
 
     // Bail early if:
     // loading: it's already loading
@@ -53,75 +45,53 @@ class CardRenderer extends React.Component {
     const scrolledToBottom =
       Math.ceil(scrollTop + clientHeight) >= scrollHeight;
     if (scrolledToBottom) {
-      this.loadData(currentPage);
+      this.props.fetchData();
     }
   };
 
-  loadData = (currentPage) => {
-    this.setState({ loading: true }, () => {
-      const url = this.props.generateUrl(currentPage);
-
-      axios({
-        method: 'get',
-        url,
-        params: this.props.params,
-        headers: {
-          Authorization: `Client-ID ${process.env.CLIENT_ID}`,
-        },
-      })
-        .then((res) => {
-          this.setState(prevState => ({
-            cardData: [...prevState.cardData, ...res.data.data.map(dataItem => ({
-              id: dataItem.id,
-              images: dataItem.images,
-              title: dataItem.title,
-              ups: dataItem.ups,
-              downs: dataItem.downs,
-              views: dataItem.views,
-              commentCount: dataItem.comment_count,
-              link: dataItem.link,
-
-            }))],
-            currentPage: prevState.currentPage + 1,
-            loading: false,
-            loadMoreData: (res.data.data.length > 0), // data was fetched try again to fetch more data.
-          }));
-        })
-        .catch(err => console.log(err));
-    });
-  };
-
   render() {
-    const { cardData, loading } = this.state;
+    const { data, loadMoreData } = this.props;
     return (
-      <Grid>
-        <div className="cardListWrapper">
-          {cardData.map(dataItem => (
-            <Card key={dataItem.id} className="cardItem" data={dataItem} />
-          ))}
+      <div className="cardRenderer">
+        <div className="cardRenderer__controls">
+          <this.props.controls />
+          <div className="cardRenderer__controls--common">
+            <button>A</button>
+            <button>B</button>
+          </div>
         </div>
-        <div className="loader">
-          {loading ? (
-            <Loader type="Oval" color="#6BD700" height="80" width="80" />
-          ) : (
-            undefined
-          )}
-        </div>
-      </Grid>
+
+        { data.length === 0 ?
+            (
+              <div className="loader">
+                <Loader type="Oval" color="#6BD700" height="80" width="80" />
+              </div>
+            )
+            : (
+              <React.Fragment>
+                <div className="cardListWrapper">
+                  {data.map(card => (
+                    <Card key={card.id} className="cardItem" data={card} />
+                      ))}
+                </div>
+                <div className="loader">
+                  {loadMoreData &&
+                  <Loader type="Oval" color="#6BD700" height="80" width="80" />
+                    }
+                </div>
+              </React.Fragment>
+              )
+      }
+      </div>
     );
   }
 }
 CardRenderer.propTypes = {
-  generateUrl: PropTypes.func.isRequired,
-  params: PropTypes.shape({
-    showViral: PropTypes.bool,
-    mature: PropTypes.bool,
-    album_previews: PropTypes.bool,
-  }),
-};
-
-CardRenderer.defaultProps = {
-  params: {},
+  fetchData: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+  // TODO: Add detailed propTypes:
+  loadMoreData: PropTypes.bool.isRequired,
+  data: PropTypes.array.isRequired,
 };
 
 export default CardRenderer;
