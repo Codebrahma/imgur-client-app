@@ -19,6 +19,14 @@ class Card extends React.Component {
       downs: this.props.data.downs,
     };
   }
+  componentDidMount() {
+    const { votedAlbum } = this.context;
+    const { data } = this.props;
+    // console.log(votedAlbum[data]);
+    this.setState({
+      voted: votedAlbum[data.id] || null,
+    });
+  }
 
   handleEnter = (e, callback) => {
     if (e.key === 'Enter') {
@@ -78,8 +86,8 @@ class Card extends React.Component {
 
   render() {
     const { data } = this.props;
-    const { access_token: accessToken, votedAlbum } = this.context;
-    const { ups, downs } = this.state;
+    const { access_token: accessToken } = this.context;
+    const { ups, downs, voted } = this.state;
     return (
       <Link
         className="cardLink"
@@ -88,7 +96,7 @@ class Card extends React.Component {
             state: data,
           }}
       >
-        <div className={`cardWrapper${votedAlbum[data.id] ? ` voted--${votedAlbum[data.id]}` : ''}`}>
+        <div className={`cardWrapper${voted ? ` voted--${voted}` : ''}`}>
           <div className="mediaWrapper">
             <LazyLoad >
               {data && data.images && data.images[0].type === 'video/mp4' ? (
@@ -115,12 +123,12 @@ class Card extends React.Component {
           <div className="detailsWrapper">
             <div className="title">{data && data.title}</div>
             <div className="countWrapper">
-              <div className={`statContainer green${votedAlbum[data.id] === 'up' ? ' active' : ''}`} onClick={this.handleUpvote} role="button" onKeyDown={e => this.handleEnter(e, this.handleUpvote)} tabIndex={0}>
+              <div className={`statContainer green${voted === 'up' ? ' active' : ''}`} onClick={this.handleUpvote} role="button" onKeyDown={e => this.handleEnter(e, this.handleUpvote)} tabIndex={0}>
                 <FontAwesomeIcon icon="arrow-alt-circle-up" />
                 <span>{ups}</span>
               </div>
               { accessToken &&
-                <div className={`statContainer red${votedAlbum[data.id] === 'down' ? ' active' : ''}`} onClick={this.handleDownvote} role="button" onKeyDown={e => this.handleEnter(e, this.handleDownvote)} tabIndex={0}>
+                <div className={`statContainer red${voted === 'down' ? ' active' : ''}`} onClick={this.handleDownvote} role="button" onKeyDown={e => this.handleEnter(e, this.handleDownvote)} tabIndex={0}>
                   <FontAwesomeIcon icon="arrow-alt-circle-down" />
                   <span>{downs}</span>
                 </div>

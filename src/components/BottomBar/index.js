@@ -11,14 +11,20 @@ class BottomBar extends React.Component {
     super(props);
     this.state = {
       itemFavouriteState: false,
+      voted: props.voteType,
+      ups: props.data.ups,
+      downs: props.data.downs,
     };
   }
-  componentDidMount() {
-    const { votedAlbum } = this.context;
-    const { albumId } = this.props;
-    this.setState({
-      voted: votedAlbum[albumId],
-    });
+  componentDidUpdate(prevProps) {
+    if (prevProps.data.ups !== this.props.data.ups
+      || prevProps.data.downs !== this.props.data.downs) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        ups: this.props.data.ups,
+        downs: this.props.data.downs,
+      });
+    }
   }
 
   handleEnter = (e, callback) => {
@@ -31,7 +37,6 @@ class BottomBar extends React.Component {
     const { markAlbumAsVoted } = this.context;
     galleryVoting(galleryHash, vote)
       .then((res) => {
-        console.log(res);
         if (!res.data.success) {
           // Reset to currentState:
           this.setState(resetState);
@@ -90,34 +95,44 @@ class BottomBar extends React.Component {
       .catch(err => console.log(err));
   };
   render() {
-    console.log(this.state);
-    const { itemFavouriteState } = this.state;
-    const { votedAlbum } = this.context;
-    const { albumId } = this.props;
-    const votedUp = votedAlbum[albumId] === 'up';
+    const {
+      itemFavouriteState, voted, ups, downs,
+    } = this.state;
+    const { views } = this.props.data;
     return (
-      <div className="bottomWrapper">
-        <FontAwesomeIcon
-          className={votedUp ? `bottomWrapper--${votedAlbum[albumId]}` : ''}
-          onClick={this.handleUpvote}
-          role="button"
-          onKeyDown={e => this.handleEnter(e, this.handleUpvote)}
-          tabIndex={0}
-          icon="arrow-alt-circle-up"
-        />
-        <FontAwesomeIcon
-          className={!votedUp ? `bottomWrapper--${votedAlbum[albumId]}` : ''}
-          onClick={this.handleDownvote}
-          role="button"
-          onKeyDown={e => this.handleEnter(e, this.handleDownvote)}
-          tabIndex={0}
-          icon="arrow-alt-circle-down"
-        />
-        <FontAwesomeIcon
-          onClick={this.handleFavourite}
-          icon="heart"
-          className={itemFavouriteState ? 'favourite' : ''}
-        />
+      <div className="upperContainer">
+        <div className="bottomWrapper">
+          <FontAwesomeIcon
+            className={voted === 'up' ? `bottomWrapper--${voted}` : ''}
+            onClick={this.handleUpvote}
+            role="button"
+            onKeyDown={e => this.handleEnter(e, this.handleUpvote)}
+            tabIndex={0}
+            icon="arrow-alt-circle-up"
+          />
+          <FontAwesomeIcon
+            className={voted === 'down' ? `bottomWrapper--${voted}` : ''}
+            onClick={this.handleDownvote}
+            role="button"
+            onKeyDown={e => this.handleEnter(e, this.handleDownvote)}
+            tabIndex={0}
+            icon="arrow-alt-circle-down"
+          />
+          <FontAwesomeIcon
+            onClick={this.handleFavourite}
+            icon="heart"
+            className={itemFavouriteState ? 'favourite' : ''}
+          />
+          <div className="bottomWrapper__bottomText">
+            <div>
+              <span className="bottomWrapper__bottomText__text">{ups - downs}</span> points
+            </div>
+            <div >
+              <span className="bottomWrapper__bottomText__text">{views}</span> views
+            </div>
+          </div>
+        </div>
+
       </div>
     );
   }
@@ -128,7 +143,16 @@ BottomBar.propTypes = {
     ups: PropTypes.number,
     downs: PropTypes.number,
     views: PropTypes.number,
-  }).isRequired,
+  }),
+  voteType: PropTypes.string,
+};
+BottomBar.defaultProps = {
+  voteType: null,
+  data: ({
+    ups: 0,
+    downs: 0,
+    views: 0,
+  }),
 };
 
 export default BottomBar;
