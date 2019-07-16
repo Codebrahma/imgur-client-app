@@ -33,7 +33,7 @@ class CommentBox extends React.Component {
           const { id } = res.data.data;
           if (requestType === 'comment') {
             const { handleCommentUpdate } = this.props;
-            this.setState({ comment: '' }, () => handleCommentUpdate(comment, id));
+            this.setState({ currentText: '' }, () => handleCommentUpdate(comment, id));
           } else {
             const { handleUpdateReply, imageId } = this.props;
             const tempObj = {
@@ -55,7 +55,7 @@ class CommentBox extends React.Component {
   }
   render() {
     const { currentText } = this.state;
-    const { access_token } = this.context;
+    const { access_token: accessToken } = this.context;
     const { reply } = this.props;
     return (
       <div className="commnetBoxWrapper">
@@ -65,7 +65,7 @@ class CommentBox extends React.Component {
           className="textArea"
           value={currentText}
           onChange={this.handleCommentText}
-          disabled={!access_token}
+          disabled={!accessToken}
         />
         <button
           className={`button${(currentText.length !== 0 && ' button--active') || ''}`}
