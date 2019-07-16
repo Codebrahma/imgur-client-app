@@ -10,6 +10,7 @@ class AuthContextProvider extends Component {
       access_token: localStorage.getItem('access_token'),
       refresh_token: localStorage.getItem('refresh_token'),
       account_username: localStorage.getItem('account_username'),
+      votedAlbum: {},
     };
   }
 
@@ -36,10 +37,25 @@ class AuthContextProvider extends Component {
       this.setState(data);
     };
 
+    markAlbumAsVoted = (id, type) => {
+      const { votedAlbum } = this.state;
+      const tempVotedAlbum = { ...votedAlbum };
+      if (type === 'veto') {
+        delete tempVotedAlbum[id];
+      } else {
+        tempVotedAlbum[id] = type;
+      }
+
+      this.setState({
+        votedAlbum: tempVotedAlbum,
+      });
+    }
+
     render() {
       return (
         <AuthContext.Provider value={Object.assign({}, this.state, {
           extractParamsAndSaveToLocalStorageAndState: this.extractParamsAndSaveToLocalStorageAndState,
+          markAlbumAsVoted: this.markAlbumAsVoted,
           logOut: this.logOut,
         })}
         >
