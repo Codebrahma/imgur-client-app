@@ -100,7 +100,6 @@ class BottomBar extends React.Component {
     } = this.state;
     const { views } = this.props.data;
     return (
-      <div className="upperContainer">
         <div className="bottomWrapper">
           <FontAwesomeIcon
             className={voted === 'up' ? `bottomWrapper--${voted}` : ''}
@@ -132,8 +131,6 @@ class BottomBar extends React.Component {
             </div>
           </div>
         </div>
-
-      </div>
     );
   }
 }

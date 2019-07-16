@@ -3,15 +3,13 @@
     display: flex;
     flex-flow: row;
     justify-content: space-around;
-    width: 100%;
     font-size: 2rem;
     background-color: #303237;
     border-radius: 4px;
     min-height: 45px;
     padding: 0.5rem;
-    margin: 10px 0;
+    margin: 10px auto;
     color: white;
-    padding-top: 10px 0;
     &--up {
         color: #1BB76E;
     }
