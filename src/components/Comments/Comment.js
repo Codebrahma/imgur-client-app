@@ -126,7 +126,9 @@ class Comment extends React.Component {
     } = this.state;
     const { strippedComment, links } = this.extractLinksAndComments(comment);
     return (
-      <div className={replyBox ? 'indentCommentBox' : ''}>
+      <div
+        className={replyBox && 'indentCommentBox'}
+      >
         {showReportModal && (
           <ReportUser
             handleCloseReportModal={this.handleCloseReportModal}
@@ -134,7 +136,9 @@ class Comment extends React.Component {
           />
         )}
         <ToastContainer />
-        <div className="commentWrapper">
+        <div className={`commentWrapper ${voted === 'up' ?
+          'activeVoteUp' : ''} ${voted === 'down' ? 'activeVoteDown' : ''}`}
+        >
           {profileComment && (
             <LazyLoad className="fixToLeft padding">
               <Link to={`/gallery/${imageId}`}>
