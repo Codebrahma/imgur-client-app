@@ -91,7 +91,7 @@ class Album extends React.Component {
         )}
         <BottomBar albumId={galleryHash} data={data} voteType={votedAlbum[galleryHash]} />
         <CommentBox
-          commnet={galleryHash}
+          albumId={galleryHash}
           handleCommentUpdate={this.handlePostedComment}
         />
 
