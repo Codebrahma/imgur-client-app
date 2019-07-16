@@ -30,7 +30,7 @@ class Album extends React.Component {
         this.setState(prevState => ({
           commentData: responses[0].data.data,
           albumData: (responses[1] && responses[1].data.data) || prevState.albumData,
-        }));
+        }), () => { document.title = this.state.albumData.title; });
       });
   }
 
