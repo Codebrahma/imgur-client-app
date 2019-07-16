@@ -1,12 +1,14 @@
+@import '../../variables.scss';
+
 .indentCommentBox {
   position: relative;
   margin-left: 40px;
 }
 .activeVoteUp {
-  border-left: 4px solid #00d9bc;
+  border-left: 4px solid $green;
 }
 .activeVoteDown {
-  border-left: 4px solid red;
+  border-left: 4px solid $red;
 }
 .replyIcon {
   display: none;
@@ -39,16 +41,16 @@
   }
 }
 .activeDown {
-  color: red;
+  color: $red;
 }
 .activeUp {
-  color: #00d9bc;
+  color: $green;
 }
 .commentWrapper {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  border-radius: 6px 6px 6px 6px;
+  border-radius:4px;
   background-color: #2c2f34;
   color: white;
   margin-top: 10px;
