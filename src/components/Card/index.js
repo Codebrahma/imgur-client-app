@@ -19,6 +19,14 @@ class Card extends React.Component {
       downs: this.props.data.downs,
     };
   }
+  componentDidMount() {
+    const { votedAlbum } = this.context;
+    const { data } = this.props;
+    // console.log(votedAlbum[data]);
+    this.setState({
+      voted: votedAlbum[data.id] || null,
+    });
+  }
 
   handleEnter = (e, callback) => {
     if (e.key === 'Enter') {
@@ -28,6 +36,7 @@ class Card extends React.Component {
 
   handleVotingAPI = (vote, resetState) => {
     const { id: galleryHash } = this.props.data;
+    const { markAlbumAsVoted } = this.context;
     galleryVoting(galleryHash, vote)
       .then((res) => {
         console.log(res);
@@ -35,6 +44,7 @@ class Card extends React.Component {
           // Reset to currentState:
           this.setState(resetState);
         }
+        markAlbumAsVoted(galleryHash, vote);
       })
       .catch((err) => {
         // TODO: Send a toast about error and reset.
@@ -77,7 +87,7 @@ class Card extends React.Component {
   render() {
     const { data } = this.props;
     const { access_token: accessToken } = this.context;
-    const { voted, ups, downs } = this.state;
+    const { ups, downs, voted } = this.state;
     return (
       <Link
         className="cardLink"

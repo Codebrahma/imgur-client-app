@@ -1,11 +1,32 @@
+@import '../../mixins.scss';
 .bottomWrapper {
     display: flex;
     flex-flow: row;
     justify-content: space-around;
-    width: 100%;
-    min-height: 45px;
+    font-size: 2rem;
     background-color: #303237;
     border-radius: 4px;
+    min-height: 45px;
+    padding: 0.5rem;
+    margin: 10px auto;
+    color: white;
+    &--up {
+        color: #1BB76E;
+    }
+    &--down {
+        color: #DB3535;
+    }
+    &__bottomText {
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        font-size: 10px;
+        @include font-poppins();
+        &__text {
+            margin-right: 0.2rem;
+        }
+    }
 }
 .favourite {
     color: #00D9BC;
