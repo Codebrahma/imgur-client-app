@@ -33,7 +33,7 @@ class CommentBox extends React.Component {
           const { id } = res.data.data;
           if (requestType === 'comment') {
             const { handleCommentUpdate } = this.props;
-            this.setState({ comment:'' }, () => handleCommentUpdate(comment, id));
+            this.setState({ comment: '' }, () => handleCommentUpdate(comment, id));
           } else {
             const { handleUpdateReply, imageId } = this.props;
             const tempObj = {
@@ -61,13 +61,14 @@ class CommentBox extends React.Component {
       <div className="commnetBoxWrapper">
         <ToastContainer />
         <textarea
+          placeholder="Write a Comment"
           className="textArea"
           value={currentText}
           onChange={this.handleCommentText}
           disabled={!access_token}
         />
         <button
-          className={`button${(currentText.length !== 0 && ' active') || ''}`}
+          className={`button${(currentText.length !== 0 && ' button--active') || ''}`}
           disabled={currentText.length === 0}
           onClick={reply ? () => this.handleApi('reply') : () => this.handleApi('comment')}
         >
