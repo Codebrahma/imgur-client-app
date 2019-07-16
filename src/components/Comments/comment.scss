@@ -2,6 +2,12 @@
   position: relative;
   margin-left: 40px;
 }
+.activeVoteUp {
+  border-left: 4px solid #00d9bc;
+}
+.activeVoteDown {
+  border-left: 4px solid red;
+}
 .replyIcon {
   display: none;
 }
@@ -25,7 +31,7 @@
 }
 .voteIcon {
   background-color: #2c2f34;
-  margin-right: 5px;
+  margin-right: 8px;
   padding: 5px;
   border-radius: 2px;
   .iconVote {
