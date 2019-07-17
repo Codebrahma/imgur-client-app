@@ -23,6 +23,8 @@ class User extends Component {
   }
 
   componentDidMount() {
+    const { username } = this.props.match.params;
+    document.title = `${username} : Imgur Client`;
     this.fetchUserData();
   }
 
