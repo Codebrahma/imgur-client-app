@@ -7,6 +7,7 @@ import AuthContextProvider from './context/AuthContext';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Loader from './components/Loader';
 // import User from './modules/User';
 // import Dashboard from './modules/Dashboard';
 // import AuthCallback from './modules/Auth/AuthCallback';
@@ -44,7 +45,11 @@ const Album = lazy(() => import('./modules/Album'));
 // const Private = () => <h1>Private</h1>;
 
 const Routes = () => (
-  <Suspense fallback={<div>loading...</div>}>
+  <Suspense fallback={
+    <div>
+      <Loader fullScreen />
+    </div>}
+  >
     <AuthContextProvider>
 
       <Router>

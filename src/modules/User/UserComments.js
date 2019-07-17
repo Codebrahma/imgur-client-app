@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Grid } from 'react-flexbox-grid';
 import PropTypes from 'prop-types';
-import Loader from 'react-loader-spinner';
 import { debounce } from 'throttle-debounce';
 import { fetchUserProflieComment } from '../../api';
 import Comments from '../../components/Comments';
+import Loader from '../../components/Loader';
 
 class UserComments extends Component {
   constructor(props) {
@@ -83,9 +83,7 @@ class UserComments extends Component {
           <Comments commentData={commentData} profileComment />
         </div>
         {loading && (
-        <div className="userpage__section--comment-loader">
-          <Loader type="Oval" color="#6BD700" height="80" width="80" />
-        </div>
+        <Loader />
           )}
       </Grid>
     );
