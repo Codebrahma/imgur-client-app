@@ -35,6 +35,10 @@ class Home extends Component {
     };
   }
 
+  componentDidMount() {
+    document.title = 'Imgur Client';
+  }
+
   changeSort = (sort) => {
     this.setState(
       {
