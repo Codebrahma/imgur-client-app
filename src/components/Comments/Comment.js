@@ -88,8 +88,7 @@ class Comment extends React.Component {
     let extraPoint = 0;
     const voteTypeForApi = voted === voteType ? 'veto' : voteType;
     extraPoint = extraPoint === 0 && voteTypeForApi === 'up' ? 1 : extraPoint;
-    extraPoint =
-      extraPoint === 0 && voteTypeForApi === 'down' ? -1 : extraPoint;
+    extraPoint = extraPoint === 0 && voteTypeForApi === 'down' ? -1 : extraPoint;
     const tempPoint = tempPointForApi + extraPoint;
     this.setState({ voted: voteTypeForApi, points: tempPoint });
     voteForCommentAndReply(id, voteTypeForApi)
@@ -127,7 +126,7 @@ class Comment extends React.Component {
     const { strippedComment, links } = this.extractLinksAndComments(comment);
     return (
       <div
-        className={replyBox && 'indentCommentBox'}
+        className={replyBox ? 'indentCommentBox' : ''}
       >
         {showReportModal && (
           <ReportUser

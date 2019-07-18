@@ -6,6 +6,7 @@ import Media from '../../components/Media';
 import BottomBar from '../../components/BottomBar';
 import CommentBox from '../../components/CommentBox';
 import Comments from '../../components/Comments';
+import Loader from '../../components/Loader';
 import './album.scss';
 
 class Album extends React.Component {
@@ -87,7 +88,7 @@ class Album extends React.Component {
         { albumData ? (
           <this.renderAlbumData />
         ) : (
-          <h1>Loading Album Data</h1>
+          <Loader fullScreen />
         )}
         <BottomBar albumId={galleryHash} data={data} voteType={votedAlbum[galleryHash]} />
         <CommentBox
@@ -98,7 +99,7 @@ class Album extends React.Component {
         { commentData ? (
           <Comments commentData={commentData} />
         ) : (
-          <h1>Loading Comment Data</h1>
+          <Loader />
         )}
       </div>
     );

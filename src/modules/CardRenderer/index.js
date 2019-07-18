@@ -1,9 +1,9 @@
 import React from 'react';
-import Loader from 'react-loader-spinner';
 import PropTypes from 'prop-types';
 import { debounce } from 'throttle-debounce';
 import Card from '../../components/Card';
 import './cardRenderer.scss';
+import Loader from '../../components/Loader';
 
 class CardRenderer extends React.Component {
   constructor(props) {
@@ -64,7 +64,7 @@ class CardRenderer extends React.Component {
         { data.length === 0 ?
             (
               <div className="loader">
-                <Loader type="Oval" color="#6BD700" height="80" width="80" />
+                <Loader fullScreen />
               </div>
             )
             : (
@@ -74,11 +74,8 @@ class CardRenderer extends React.Component {
                     <Card key={card.id} className="cardItem" data={card} />
                       ))}
                 </div>
-                <div className="loader">
-                  {loadMoreData &&
-                  <Loader type="Oval" color="#6BD700" height="80" width="80" />
-                    }
-                </div>
+                {loadMoreData &&
+                  <Loader />}
               </React.Fragment>
               )
       }
