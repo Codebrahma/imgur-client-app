@@ -206,12 +206,12 @@ class Comment extends React.Component {
               links.map(link => (
                 <LazyLoad key={id}>
                   {link.includes('.mp4') ? (
-                    <video autoPlay loop muted>
+                    <video  className="commentMedia" autoPlay loop muted>
                       <source src={link} />
                     </video>
                   ) : (
                     <img
-                      className="commentImage"
+                      className="commentMedia"
                       src={link}
                       alt="commentImage"
                     />
