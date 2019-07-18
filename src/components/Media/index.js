@@ -13,7 +13,7 @@ class Media extends React.Component {
     return (
       <LazyLoad>
         {content.type === 'video/mp4' ? (
-          <video autoPlay loop className="media" controls autoPlay muted>
+          <video autoPlay loop className="image" controls autoPlay muted>
             <source src={content.mp4} />
           </video>
         ) : (
