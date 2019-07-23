@@ -98,6 +98,7 @@ class Card extends React.Component {
           pathname: `/gallery/${data.id}`,
           state: data,
         }}
+        style={{ margin: masonry && '0.5rem' }}
       >
         <div className={`cardWrapper${voted ? ` voted--${voted}` : ''}`} style={{ width: masonry && '250px', height: !masonry && '265px' }}>
           <div
