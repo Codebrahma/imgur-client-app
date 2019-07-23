@@ -16,7 +16,7 @@ class CardRenderer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      masonry: false,
+      masonry: true,
     };
   }
   componentWillMount() {
@@ -61,7 +61,6 @@ class CardRenderer extends React.Component {
   render() {
     const { data, loadMoreData } = this.props;
     const { masonry } = this.state;
-    const imagesLoadedOptions = { background: '.media' };
     return (
       <div className="cardRenderer">
         <div className="cardRenderer__controls">
@@ -86,10 +85,13 @@ class CardRenderer extends React.Component {
               // options={masonryOptions} // default {}
               // disableImagesLoaded={false} // default false
                   updateOnEachImageLoad
+                  options={{ fitWidth: true }}
+                  style={{ margin: '0 auto' }}
                 >
+
                   {data.map(card => (
                     <Card key={card.id} className="cardItem" data={card} masonry={masonry} />
-              ))}
+                    ))}
                 </Masonry>
             :
                 <div className="cardListWrapper">
