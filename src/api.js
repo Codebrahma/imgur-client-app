@@ -11,6 +11,7 @@ import {
   userDetailsUrl,
   userSettingUrl,
   userProfileCommentsUrl,
+  fileUploadUrl,
 } from './apiUrl';
 
 const getAccessToken = () => localStorage.getItem('access_token');
@@ -21,6 +22,11 @@ const sendPost = (url, data = null) =>
       Authorization: `Bearer ${getAccessToken()}`,
     },
   });
+const sendPostClientId = (url, data = null) => axios.post(url, data, {
+  headers: {
+    Authorization: `Client-ID ${process.env.CLIENT_ID}`,
+  },
+});
 
 const sendGetPublic = url =>
   axios(url, {
@@ -50,6 +56,8 @@ const fetchUserProflieComment = (username, sort, page) =>
   sendGetPrivate(userProfileCommentsUrl(username, sort, page));
 
 const addToFavorite = albumId => sendPost(favoriteUrl(albumId));
+
+const uploadFile = data => sendPostClientId(fileUploadUrl(), data);
 
 const reportUser = (commentId, reason) =>
   sendPost(reportCommentAndReplyUrl(commentId), { reason });
@@ -89,4 +97,5 @@ export {
   fetchUserDetails,
   updateAccountSetting,
   fetchUserProflieComment,
+  uploadFile,
 };

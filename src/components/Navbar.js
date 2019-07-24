@@ -5,14 +5,20 @@ import logo from '../svgs/logo';
 import { AuthContext } from '../context/AuthContext';
 import Auth from '../modules/Auth';
 import ProfileNavbar from '../modules/ProfileNavbar';
+import Button from './Button';
+import './navbar.scss';
 
 const Navbar = () => (
   <nav className="nav">
     <Grid>
-      <Link to="/">
-        {logo}
-      </Link>
-
+      <div className="nav--logoButton">
+        <Link to="/">
+          {logo}
+        </Link>
+        <Link to="/upload">
+          <Button>New post</Button>
+        </Link>
+      </div>
       {/* <SearchModuleORComponent /> will come here. */}
 
       <AuthContext.Consumer>
