@@ -17,6 +17,7 @@ class Card extends React.Component {
       // TODO: Check the availability of data.
       ups: this.props.data.ups,
       downs: this.props.data.downs,
+      isImageLoading: true,
     };
   }
   componentDidMount() {
@@ -32,7 +33,7 @@ class Card extends React.Component {
     if (e.key === 'Enter') {
       callback(e);
     }
-  }
+  };
 
   handleVotingAPI = (vote, resetState) => {
     const { id: galleryHash } = this.props.data;
@@ -52,7 +53,7 @@ class Card extends React.Component {
         // Reset to currentState:
         this.setState(resetState);
       });
-  }
+  };
 
   handleUpvote = (e) => {
     e.preventDefault();
@@ -67,7 +68,7 @@ class Card extends React.Component {
 
     // Hitting API to persist the changes, passing current state for reset purposes:
     this.handleVotingAPI(doingReset ? 'veto' : 'up', { ...this.state });
-  }
+  };
 
   handleDownvote = (e) => {
     e.preventDefault();
@@ -82,57 +83,85 @@ class Card extends React.Component {
 
     // Hitting API to persist the changes, passing current state for reset purposes:
     this.handleVotingAPI(doingReset ? 'veto' : 'down', { ...this.state });
-  }
+  };
+  checkForImageLoading = () => this.setState({ isImageLoading: false });
+  getHeight = (height, width) => (height / width) * 250; // here 250 is the card width
 
   render() {
-    const { data } = this.props;
+    const { data, masonry } = this.props;
     const { access_token: accessToken } = this.context;
     const { ups, downs, voted } = this.state;
     return (
       <Link
         className="cardLink"
         to={{
-            pathname: `/gallery/${data.id}`,
-            state: data,
-          }}
+          pathname: `/gallery/${data.id}`,
+          state: data,
+        }}
+        style={{ margin: masonry && '0.5rem' }}
       >
-        <div className={`cardWrapper${voted ? ` voted--${voted}` : ''}`}>
-          <div className="mediaWrapper">
-            <LazyLoad >
+        <div className={`cardWrapper${voted ? ` voted--${voted}` : ''}`} style={{ width: masonry && '250px', height: !masonry && '265px' }}>
+          <div
+            className="mediaWrapper"
+            style={{
+              height: masonry && data.images
+                ? `${this.getHeight(
+                    data.images[0].height,
+                    data.images[0].width,
+                  )}px`
+                : masonry && '250px',
+              width: masonry && '250px',
+            }}
+          >
+            <LazyLoad onContentVisible={this.checkForImageLoading}>
               {data && data.images && data.images[0].type === 'video/mp4' ? (
-                <video
-                  autoPlay
-                  loop
-                  className="media"
-                  muted
-                >
+                <video autoPlay loop className="media" muted>
                   <source src={data && data.images && data.images[0].mp4} />
                 </video>
-          ) : (
-            <img
-              className="media"
-              src={
-              (data && data.images && data.images[0].link) ||
-              (data && data.link)
-            }
-              alt="img"
-            />
-            )}
+              ) : (
+                <img
+                  className="media"
+                  src={
+                    (data && data.images && data.images[0].link) ||
+                    (data && data.link)
+                  }
+                  alt="img"
+                />
+              )}
             </LazyLoad>
+            {this.state.isImageLoading && (
+              <div className="media" style={{ backgroundColor: 'black' }} />
+            )}
           </div>
           <div className="detailsWrapper">
             <div className="title">{data && data.title}</div>
             <div className="countWrapper">
-              <div className={`statContainer green${voted === 'up' ? ' active' : ''}`} onClick={this.handleUpvote} role="button" onKeyDown={e => this.handleEnter(e, this.handleUpvote)} tabIndex={0}>
+              <div
+                className={`statContainer green${
+                  voted === 'up' ? ' active' : ''
+                }`}
+                onClick={this.handleUpvote}
+                role="button"
+                onKeyDown={e => this.handleEnter(e, this.handleUpvote)}
+                tabIndex={0}
+              >
                 <FontAwesomeIcon icon="arrow-alt-circle-up" />
                 <span>{ups}</span>
               </div>
-              { accessToken &&
-                <div className={`statContainer red${voted === 'down' ? ' active' : ''}`} onClick={this.handleDownvote} role="button" onKeyDown={e => this.handleEnter(e, this.handleDownvote)} tabIndex={0}>
+              {accessToken && (
+                <div
+                  className={`statContainer red${
+                    voted === 'down' ? ' active' : ''
+                  }`}
+                  onClick={this.handleDownvote}
+                  role="button"
+                  onKeyDown={e => this.handleEnter(e, this.handleDownvote)}
+                  tabIndex={0}
+                >
                   <FontAwesomeIcon icon="arrow-alt-circle-down" />
                   <span>{downs}</span>
                 </div>
-              }
+              )}
               <div className="statContainer">
                 <FontAwesomeIcon icon="comment" />
                 <span>{data && data.commentCount}</span>
@@ -160,6 +189,7 @@ Card.propTypes = {
     link: PropTypes.string.isRequired,
     images: PropTypes.array,
   }).isRequired,
+  masonry: PropTypes.bool.isRequired,
 };
 
 export default withRouter(Card);

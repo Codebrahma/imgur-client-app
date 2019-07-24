@@ -54,6 +54,7 @@
     "react-dom": "^16.8.4",
     "react-flexbox-grid": "^2.1.2",
     "react-lazy-load": "^3.0.13",
+    "react-masonry-component": "^6.2.1",
     "react-modal": "^3.8.2",
     "react-router-dom": "^5.0.1",
     "react-toastify": "^5.3.1",
