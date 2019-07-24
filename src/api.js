@@ -11,7 +11,6 @@ import {
   userDetailsUrl,
   userSettingUrl,
   userProfileCommentsUrl,
-  fileUploadUrl,
 } from './apiUrl';
 
 const getAccessToken = () => localStorage.getItem('access_token');
@@ -22,11 +21,6 @@ const sendPost = (url, data = null) =>
       Authorization: `Bearer ${getAccessToken()}`,
     },
   });
-const sendPostClientId = (url, data = null) => axios.post(url, data, {
-  headers: {
-    Authorization: `Client-ID ${process.env.CLIENT_ID}`,
-  },
-});
 
 const sendGetPublic = url =>
   axios(url, {
@@ -97,5 +91,4 @@ export {
   fetchUserDetails,
   updateAccountSetting,
   fetchUserProflieComment,
-  uploadFile,
 };
