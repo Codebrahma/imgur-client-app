@@ -1,0 +1,67 @@
+.newPost{
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+    &--textArea{
+        width: 100%;
+        background-color: #303237;
+        color: white;
+        resize: none;
+        border: none;
+        border-radius: 4px;
+        height: 5rem;
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        &:focus {
+          outline: none;
+        }
+    }
+    &--deleteButton{
+        background-color: red;
+    }
+
+    textarea::-webkit-input-placeholder {
+        font-size: 1rem;
+        color: white;
+      }
+      textarea:focus::-webkit-input-placeholder {
+        color: #f2f2f2;
+        opacity: 0.5;
+      }
+    
+      textarea:-moz-placeholder {
+        /* Firefox 18- */
+        color: white;
+      }
+      textarea:focus:-moz-placeholder {
+        /* Firefox 18- */
+        color: #f2f2f2;
+        opacity: 0.5;
+      }
+    
+      textarea::-moz-placeholder {
+        /* Firefox 19+ */
+        color: white;
+      }
+      textarea:focus::-moz-placeholder {
+        /* Firefox 19+ */
+        color: #f2f2f2;
+        opacity: 0.5;
+      }
+    
+      textarea:-ms-input-placeholder {
+        color: white;
+      }
+      textarea:focus:-ms-input-placeholder {
+        color: #f2f2f2;
+        opacity: 0.5;
+      }
+    
+      textarea::placeholder {
+        color: white;
+      }
+      textarea:focus::placeholder {
+        color: #f2f2f2;
+        opacity: 0.5;
+      }
+}

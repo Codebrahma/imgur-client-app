@@ -14,3 +14,5 @@ export const publicGalleryUrl = (section = 'hot', sort = 'viral', window = 'day'
 export const userFavoriteGalleryUrl = (username, page = 0, favoritesSort = 'newest') => `${baseUrl}/account/${username}/favorites/${page}/${favoritesSort}`;
 export const userProfileCommentsUrl = (username, sort = 'newest', page = 0) => `${baseUrl}/account/${username}/comments/${sort}/${page}`;
 export const fileUploadUrl = () => `${baseUrl}/upload`;
+export const deleteFileUrl = imageDeleteHash => `${baseUrl}/image/${imageDeleteHash}`;
+

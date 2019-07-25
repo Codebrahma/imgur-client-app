@@ -15,8 +15,8 @@ const Navbar = () => (
         <Link to="/">
           {logo}
         </Link>
-        <Link to="/upload">
-          <Button>New post</Button>
+        <Link to="/upload" className="nav-logoButton--uploadButton">
+          <Button color="#33BF96">New post</Button>
         </Link>
       </div>
       {/* <SearchModuleORComponent /> will come here. */}

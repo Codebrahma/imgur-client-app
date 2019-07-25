@@ -37,12 +37,12 @@ class FileUploader extends Component {
       },
     };
     axios.post(fileUploadUrl(), fd, config).then((res) => {
-      this.props.history.push('/a', { data: res.data.data });
+      this.props.history.push(`/a/${res.data.data.id}`, { data: res.data.data, type });
     });
   }
   render() {
     console.log(this.state);
-    const {imageLoadedPercentage,showPRogressBar} = this.state;
+    const { imageLoadedPercentage, showPRogressBar } = this.state;
     return (
       <div className="fileUploader">
         <div className="fileUploader--dragBox" >
@@ -59,8 +59,8 @@ class FileUploader extends Component {
           <Button><input type="file" name="fileForUplaod" onChange={this.handleFileSelector} /></Button>
         </div>
         {
-        showPRogressBar && <Progress percent={this.state.imageLoadedPercentage} />
-        
+        showPRogressBar && <Progress percent={imageLoadedPercentage} />
+
         }
       </div>
     );
