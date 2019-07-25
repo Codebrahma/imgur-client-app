@@ -15,9 +15,16 @@ const Navbar = () => (
         <Link to="/">
           {logo}
         </Link>
-        <Link to="/upload" className="nav-logoButton--uploadButton">
-          <Button color="#33BF96">New post</Button>
-        </Link>
+        <AuthContext.Consumer>
+          {
+            value => (
+              value.access_token &&
+              <Link to="/upload" className="nav-logoButton--uploadButton">
+                <Button color="#33BF96">New post</Button>
+              </Link>
+            )
+          }
+        </AuthContext.Consumer>
       </div>
       {/* <SearchModuleORComponent /> will come here. */}
 
