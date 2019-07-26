@@ -17,6 +17,8 @@ const AuthCallback = lazy(() => import('./modules/Auth/AuthCallback'));
 const Dashboard = lazy(() => import('./modules/Dashboard'));
 const User = lazy(() => import('./modules/User'));
 const Album = lazy(() => import('./modules/Album'));
+const FileUploader = lazy(() => import('./components/FileUploader'));
+const NewPost = lazy(() => import('./modules/NewPost'));
 // const User = lazy(() => import('./modules/User'));
 
 // https://reacttraining.com/react-router/web/example/auth-workflow
@@ -72,6 +74,8 @@ const Routes = () => (
 
             <Route path="/auth_cb" component={AuthCallback} />
             <Route path="/dashboard" component={Dashboard} />
+            <Route path="/upload" component={FileUploader} />
+            <Route path="/a/:imageId" component={NewPost} />
             <Redirect exact from="/user/:username" to="/user/:username/about" />
             <Route path="/user/:username" component={User} />
             <Route path="/gallery/:galleryHash" component={Album} />

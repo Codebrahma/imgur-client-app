@@ -11,6 +11,7 @@ import {
   userDetailsUrl,
   userSettingUrl,
   userProfileCommentsUrl,
+  deleteFileUrl,
 } from './apiUrl';
 
 const getAccessToken = () => localStorage.getItem('access_token');
@@ -42,6 +43,13 @@ const sendPut = (url, data = null) =>
     },
   });
 
+const sendDelete = url =>
+  axios.delete(url, {
+    headers: {
+      Authorization: `Bearer ${getAccessToken()}`,
+    },
+  });
+
 // the get request who uses access token as header goes under sendGetPrivate
 const galleryVoting = (galleryHash, vote) =>
   sendGetPrivate(galleryVoatingUrl(galleryHash, vote));
@@ -50,6 +58,8 @@ const fetchUserProflieComment = (username, sort, page) =>
   sendGetPrivate(userProfileCommentsUrl(username, sort, page));
 
 const addToFavorite = albumId => sendPost(favoriteUrl(albumId));
+
+const uploadFile = data => sendPostClientId(fileUploadUrl(), data);
 
 const reportUser = (commentId, reason) =>
   sendPost(reportCommentAndReplyUrl(commentId), { reason });
@@ -78,6 +88,8 @@ const fetchUserDetails = username => sendGetPublic(userDetailsUrl(username));
 const updateAccountSetting = (username, data) =>
   sendPut(userSettingUrl(username), data);
 
+const deleteUploadedFile = imageDeleteHash => sendDelete(deleteFileUrl(imageDeleteHash));
+
 export {
   addToFavorite,
   galleryVoting,
@@ -89,4 +101,5 @@ export {
   fetchUserDetails,
   updateAccountSetting,
   fetchUserProflieComment,
+  deleteUploadedFile,
 };
