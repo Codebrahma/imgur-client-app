@@ -3,6 +3,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
 
@@ -67,7 +68,10 @@ module.exports = {
       filename: devMode ? "[name].css" : "[name].[hash].css",
       chunkFilename: devMode ? "[id].css" : "[id].[hash].css"
     }),
-    new Dotenv({ systemvars: true })
+    new Dotenv({ systemvars: true }),
+    new CopyPlugin([
+      { from: 'src/manifest.json', to: '' },
+    ]),
   ],
   optimization: {
     minimizer: [new UglifyJsPlugin()]
